@@ -1,0 +1,2466 @@
+USE [master]
+GO
+/****** Object:  Database [projekat]    Script Date: 12.7.2020 23:48:54 ******/
+CREATE DATABASE [projekat]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'projekat', FILENAME = N'D:\SQLbaza\projekat_data.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 10%)
+ LOG ON 
+( NAME = N'projekat_log', FILENAME = N'D:\SQLbaza\projekat_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 5%)
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [projekat] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [projekat].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [projekat] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [projekat] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [projekat] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [projekat] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [projekat] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [projekat] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [projekat] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [projekat] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [projekat] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [projekat] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [projekat] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [projekat] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [projekat] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [projekat] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [projekat] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [projekat] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [projekat] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [projekat] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [projekat] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [projekat] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [projekat] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [projekat] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [projekat] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [projekat] SET  MULTI_USER 
+GO
+ALTER DATABASE [projekat] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [projekat] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [projekat] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [projekat] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [projekat] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'projekat', N'ON'
+GO
+ALTER DATABASE [projekat] SET QUERY_STORE = OFF
+GO
+USE [projekat]
+GO
+/****** Object:  Table [dbo].[activity]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[activity](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[end_date] [datetime2](7) NULL,
+	[place] [varchar](255) NULL,
+	[start_date] [datetime2](7) NULL,
+	[activity_type_id] [bigint] NULL,
+	[chief_id] [bigint] NULL,
+	[head_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[group_membership]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[group_membership](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[group_membership_fee] [float] NULL,
+	[association_membership_id] [bigint] NULL,
+	[year_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_activity_status]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_activity_status](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_activity_type]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_activity_type](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_blood_type]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_blood_type](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_canton]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_canton](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_category]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_category](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[end_age] [int] NULL,
+	[start_age] [int] NULL,
+	[unit_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_contact_type]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_contact_type](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[personal] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_country]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_country](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[official_name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_duty]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_duty](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_entity]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_entity](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_gender]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_gender](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[abbreviation] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_merit_badge]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_merit_badge](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[category_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_municipality]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_municipality](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[canton] [bigint] NULL,
+	[country] [bigint] NULL,
+	[entity] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_nationality]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_nationality](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_recognition]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_recognition](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[category_id] [bigint] NULL,
+	[lkp_recognition_type] [bigint] NULL,
+	[personal] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_recognition_type]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_recognition_type](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_school_type]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_school_type](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_scout_association]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_scout_association](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+	[translation] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_scout_group]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_scout_group](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_unit]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_unit](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_user_type]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_user_type](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_user_type_security_role]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_user_type_security_role](
+	[security_role] [bigint] NOT NULL,
+	[lkp_user_type] [bigint] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[lkp_user_type] ASC,
+	[security_role] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_woodbadge]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_woodbadge](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[lkp_year]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lkp_year](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[_key] [varchar](255) NULL,
+	[name] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[id_card_number] [int] NULL,
+	[record_number] [varchar](255) NULL,
+	[person_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_activity]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_activity](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[comment] [varchar](255) NULL,
+	[activity_id] [bigint] NULL,
+	[member_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_category]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_category](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[joined] [datetime2](7) NULL,
+	[category_id] [bigint] NULL,
+	[member_id] [bigint] NULL,
+	[made_a_promise] [datetime2](7) NULL,
+	[place] [varchar](255) NULL,
+	[active] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_duty]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_duty](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[end_date] [datetime2](7) NULL,
+	[start_date] [datetime2](7) NULL,
+	[unit_name] [varchar](255) NULL,
+	[duty_id] [bigint] NULL,
+	[member_id] [bigint] NULL,
+	[unit_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_group_membership]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_group_membership](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[date_of_payment] [datetime2](7) NULL,
+	[group_membership_id] [bigint] NULL,
+	[member_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_merit_badge]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_merit_badge](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[date] [datetime2](7) NULL,
+	[place] [varchar](255) NULL,
+	[member_id] [bigint] NULL,
+	[merit_badge_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_recognition]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_recognition](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[date] [datetime2](7) NULL,
+	[member_id] [bigint] NULL,
+	[recognition_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_school]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_school](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[document_number] [varchar](255) NULL,
+	[member_id] [bigint] NULL,
+	[school_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_scout_group]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_scout_group](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[member_since] [datetime2](7) NULL,
+	[scout_group_id] [bigint] NULL,
+	[member_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_unit]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_unit](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[joined_unit] [datetime2](7) NULL,
+	[left_unit] [datetime2](7) NULL,
+	[member_id] [bigint] NULL,
+	[unit_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[member_woodbadge]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[member_woodbadge](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[document_number] [varchar](255) NULL,
+	[member_id] [bigint] NULL,
+	[woodbadge_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[membership]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[membership](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[association_membership_fee] [float] NULL,
+	[year_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[organization_contact]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[organization_contact](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[value] [varchar](250) NULL,
+	[contact_type] [bigint] NULL,
+	[scout_group] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[parent]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[parent](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[first_name] [varchar](250) NULL,
+	[last_name] [varchar](250) NULL,
+	[gender] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[person]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[person](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[first_name] [varchar](250) NULL,
+	[last_name] [varchar](250) NULL,
+	[date_of_birth] [datetime2](7) NULL,
+	[jmbg] [varchar](255) NULL,
+	[gender] [bigint] NULL,
+	[father] [bigint] NULL,
+	[mother] [bigint] NULL,
+	[nationality] [bigint] NULL,
+	[place_of_birth] [bigint] NULL,
+	[residence] [bigint] NULL,
+	[blood_type] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[person_contact]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[person_contact](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[value] [varchar](250) NULL,
+	[contact_type] [bigint] NULL,
+	[person] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[place]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[place](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[name] [varchar](250) NOT NULL,
+	[canton] [bigint] NULL,
+	[country] [bigint] NULL,
+	[entity] [bigint] NULL,
+	[municipality] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[residence]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[residence](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[street] [varchar](250) NOT NULL,
+	[place] [bigint] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[school]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[school](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[end_date] [datetime2](7) NULL,
+	[place] [varchar](255) NULL,
+	[start_date] [datetime2](7) NULL,
+	[chief_id] [bigint] NULL,
+	[head_id] [bigint] NULL,
+	[school_type_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[scout_group]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[scout_group](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[address] [varchar](255) NULL,
+	[founded] [datetime2](7) NULL,
+	[activity_status_id] [bigint] NULL,
+	[place_id] [bigint] NULL,
+	[scout_association_id] [bigint] NULL,
+	[scout_group_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[security_role]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[security_role](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[name] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[security_user]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[security_user](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[username] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[unit]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[unit](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[founded] [datetime2](7) NULL,
+	[unit_name] [varchar](255) NULL,
+	[leader_id] [bigint] NULL,
+	[scout_group_id] [bigint] NULL,
+	[unit_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[user_role]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[user_role](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[member_id] [bigint] NULL,
+	[security_user_id] [bigint] NULL,
+	[user_type_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[woodbadge]    Script Date: 12.7.2020 23:48:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[woodbadge](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
+	[last_updated] [datetime2](7) NULL,
+	[end_date] [datetime2](7) NULL,
+	[place] [varchar](255) NULL,
+	[start_date] [datetime2](7) NULL,
+	[woodbadge_id] [bigint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[lkp_activity_status] ON 
+GO
+INSERT [dbo].[lkp_activity_status] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T15:32:55.7230000' AS DateTime2), N'active', N'aktivan')
+GO
+INSERT [dbo].[lkp_activity_status] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T15:32:56.5290000' AS DateTime2), N'inactive', N'neaktivan')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_activity_status] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_activity_type] ON 
+GO
+INSERT [dbo].[lkp_activity_type] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-21T00:59:23.5080000' AS DateTime2), N'tour', N'izlet')
+GO
+INSERT [dbo].[lkp_activity_type] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-21T00:59:24.4830000' AS DateTime2), N'march', N'marš')
+GO
+INSERT [dbo].[lkp_activity_type] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-21T00:59:25.0320000' AS DateTime2), N'multiday trip', N'bivak')
+GO
+INSERT [dbo].[lkp_activity_type] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-21T00:59:25.6260000' AS DateTime2), N'summer camp', N'ljetovanje')
+GO
+INSERT [dbo].[lkp_activity_type] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-21T00:59:26.3000000' AS DateTime2), N'winter camp', N'zimovanje')
+GO
+INSERT [dbo].[lkp_activity_type] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-22T15:35:17.4800000' AS DateTime2), N'visit', N'posjeta')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_activity_type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_blood_type] ON 
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-21T00:41:02.8340000' AS DateTime2), N'Apositive', N'A+')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-21T00:41:04.1880000' AS DateTime2), N'Anegative', N'A-')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-21T00:41:04.8290000' AS DateTime2), N'Bpositive', N'B+')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-21T00:41:05.4960000' AS DateTime2), N'Bnegative', N'B-')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-21T00:41:06.1390000' AS DateTime2), N'0positive', N'0+')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-22T15:35:26.3020000' AS DateTime2), N'0negative', N'0-')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (7, CAST(N'2020-06-22T15:35:27.1370000' AS DateTime2), N'ABpositive', N'AB+')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (8, CAST(N'2020-06-22T15:35:27.6900000' AS DateTime2), N'ABnegative', N'AB-')
+GO
+INSERT [dbo].[lkp_blood_type] ([id], [last_updated], [_key], [name]) VALUES (9, CAST(N'2020-07-11T18:00:51.1870000' AS DateTime2), N'Unknown', N'Nepoznato')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_blood_type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_canton] ON 
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T15:36:03.9050000' AS DateTime2), N'Unsko-sanski kanton', N'Unsko-sanski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T15:36:04.9220000' AS DateTime2), N'Posavski kanton', N'Posavski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-22T15:36:09.6460000' AS DateTime2), N'Tuzlanski kanton', N'Tuzlanski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-22T15:36:10.5900000' AS DateTime2), N'Zeničko-dobojski kanton', N'Zeničko-dobojski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-22T15:36:11.2580000' AS DateTime2), N'Bosansko-podrinjski kanton', N'Bosansko-podrinjski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-22T15:36:11.8600000' AS DateTime2), N'Srednjobosanski kanton', N'Srednjobosanski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (7, CAST(N'2020-06-22T15:36:12.4110000' AS DateTime2), N'Hercegovačko-neretvanski kanton', N'Hercegovačko-neretvanski kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (8, CAST(N'2020-06-22T15:36:12.9410000' AS DateTime2), N'Zapadnohercegovački kanton', N'Zapadnohercegovački kanton')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (9, CAST(N'2020-06-22T15:36:13.5340000' AS DateTime2), N'Kanton Sarajevo', N'Kanton Sarajevo')
+GO
+INSERT [dbo].[lkp_canton] ([id], [last_updated], [_key], [name]) VALUES (10, CAST(N'2020-06-22T15:36:14.1150000' AS DateTime2), N'Kanton 10', N'Kanton 10')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_canton] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_category] ON 
+GO
+INSERT [dbo].[lkp_category] ([id], [last_updated], [_key], [name], [end_age], [start_age], [unit_id]) VALUES (1, CAST(N'2020-06-21T00:44:05.9420000' AS DateTime2), N'beavers', N'cicibani', 6, 0, 1)
+GO
+INSERT [dbo].[lkp_category] ([id], [last_updated], [_key], [name], [end_age], [start_age], [unit_id]) VALUES (2, CAST(N'2020-06-21T00:44:06.8100000' AS DateTime2), N'cubs', N'poletarci i pčelice', 11, 7, 1)
+GO
+INSERT [dbo].[lkp_category] ([id], [last_updated], [_key], [name], [end_age], [start_age], [unit_id]) VALUES (3, CAST(N'2020-06-21T00:44:07.3590000' AS DateTime2), N'younger scouts', N'mlađi izviđači i planinke', 15, 12, 3)
+GO
+INSERT [dbo].[lkp_category] ([id], [last_updated], [_key], [name], [end_age], [start_age], [unit_id]) VALUES (4, CAST(N'2020-06-21T00:44:08.1350000' AS DateTime2), N'older scouts', N'stariji izviđači i planinke', 20, 16, 3)
+GO
+INSERT [dbo].[lkp_category] ([id], [last_updated], [_key], [name], [end_age], [start_age], [unit_id]) VALUES (5, CAST(N'2020-06-21T00:44:08.8840000' AS DateTime2), N'rovers', N'roveri', 30, 21, 7)
+GO
+INSERT [dbo].[lkp_category] ([id], [last_updated], [_key], [name], [end_age], [start_age], [unit_id]) VALUES (6, CAST(N'2020-06-21T00:44:09.5380000' AS DateTime2), N'adults', N'brđani i brđanke', 100, 31, 7)
+GO
+SET IDENTITY_INSERT [dbo].[lkp_category] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_contact_type] ON 
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (1, CAST(N'2020-06-22T15:39:08.8830000' AS DateTime2), N'email', N'e-mail', 1)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (2, CAST(N'2020-06-22T15:39:09.9710000' AS DateTime2), N'phone', N'telefon', 1)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (3, CAST(N'2020-06-22T15:39:10.5640000' AS DateTime2), N'cellphone', N'mobilni telefon', 1)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (4, CAST(N'2020-06-22T15:39:11.2800000' AS DateTime2), N'fax', N'fax', 0)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (5, CAST(N'2020-06-22T15:39:11.8490000' AS DateTime2), N'web page', N'web stranica', 0)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (6, CAST(N'2020-06-22T15:41:33.0150000' AS DateTime2), N'youtube', N'youtube', 0)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (7, CAST(N'2020-06-22T15:41:33.6990000' AS DateTime2), N'facebook', N'facebook', 0)
+GO
+INSERT [dbo].[lkp_contact_type] ([id], [last_updated], [_key], [name], [personal]) VALUES (8, CAST(N'2020-06-22T15:41:34.5290000' AS DateTime2), N'instagram', N'instagram', 0)
+GO
+SET IDENTITY_INSERT [dbo].[lkp_contact_type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_country] ON 
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (1, CAST(N'2020-06-22T15:45:27.7010000' AS DateTime2), N'Afganistan', N'Afganistan', N'Islamska Republika Afganistan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (2, CAST(N'2020-06-22T15:45:28.4750000' AS DateTime2), N'Albanija', N'Albanija', N'Republika Albanija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (3, CAST(N'2020-06-22T15:45:29.0940000' AS DateTime2), N'Alžir', N'Alžir', N'Alžirska Narodna Demokratska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (4, CAST(N'2020-06-22T15:48:59.0130000' AS DateTime2), N'Bolivija', N'Bolivija', N'Višenacionalna Država Bolivija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (5, CAST(N'2020-06-22T15:48:59.7860000' AS DateTime2), N'bih', N'Bosna i Hercegovina', N'Bosna i Hercegovina')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (6, CAST(N'2020-06-22T15:49:00.3440000' AS DateTime2), N'Brazil', N'Brazil', N'Savezna Republika Brazil')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (7, CAST(N'2020-06-22T15:49:01.5770000' AS DateTime2), N'Brunej Darussalam', N'Brunej Darussalam', N'Brunej Darussalam')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (8, CAST(N'2020-06-22T15:49:02.2300000' AS DateTime2), N'Bugarska', N'Bugarska', N'Republika Bugarska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (9, CAST(N'2020-06-22T15:49:02.8340000' AS DateTime2), N'Burkina Faso', N'Burkina Faso', N'Burkina Faso')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (10, CAST(N'2020-06-22T15:49:03.4000000' AS DateTime2), N'Burundi', N'Burundi', N'Republika Burundi')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (11, CAST(N'2020-06-22T15:49:04.5830000' AS DateTime2), N'Butan', N'Butan', N'Kraljevina Butan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (12, CAST(N'2020-06-22T15:49:05.3830000' AS DateTime2), N'Kipar', N'Kipar', N'Republika Kipar')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (13, CAST(N'2020-06-22T15:49:06.0090000' AS DateTime2), N'Obala Slonovače', N'Obala Slonovače', N'Republika Obala Slonovače')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (14, CAST(N'2020-06-22T15:49:06.8850000' AS DateTime2), N'Crna Gora', N'Crna Gora', N'Crna Gora')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (15, CAST(N'2020-06-22T15:49:07.5110000' AS DateTime2), N'Čad', N'Čad', N'Republika Čad')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (16, CAST(N'2020-06-22T15:49:08.2200000' AS DateTime2), N'Češka Republika', N'Češka Republika', N'Češka Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (17, CAST(N'2020-06-22T15:49:09.0330000' AS DateTime2), N'Čile', N'Čile', N'Republika Čile')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (18, CAST(N'2020-06-22T15:49:09.8800000' AS DateTime2), N'Danska', N'Danska', N'Kraljevina Danska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (19, CAST(N'2020-06-22T15:49:10.5320000' AS DateTime2), N'Demokratska Narodna Republika Koreja', N'Demokratska Narodna Republika Koreja', N'Demokratska Narodna Republika Koreja')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (20, CAST(N'2020-06-22T15:49:12.0160000' AS DateTime2), N'Demokratska Republika Kongo', N'Demokratska Republika Kongo', N'Demokratska Republika Kongo')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (21, CAST(N'2020-06-22T15:49:11.0990000' AS DateTime2), N'Dominika', N'Dominika', N'Zajednica Dominike')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (22, CAST(N'2020-06-22T15:49:13.6380000' AS DateTime2), N'Dominikanska Republika', N'Dominikanska Republika', N'Dominikanska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (23, CAST(N'2020-06-22T15:49:14.3810000' AS DateTime2), N'Džibuti', N'Džibuti', N'Republika Džibuti')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (24, CAST(N'2020-06-22T15:49:15.0390000' AS DateTime2), N'Egipat', N'Egipat', N'Arapska Republika Egipat')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (25, CAST(N'2020-06-22T15:49:22.3400000' AS DateTime2), N'Ekvador', N'Ekvador', N'Republika Ekvador')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (26, CAST(N'2020-06-22T15:49:23.3740000' AS DateTime2), N'Ekvatorska Gvineja', N'Ekvatorska Gvineja', N'Republika Ekvatorska Gvineja')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (27, CAST(N'2020-06-22T15:49:23.9950000' AS DateTime2), N'El Salvador', N'El Salvador', N'Republika El Salvador')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (28, CAST(N'2020-06-22T15:49:24.7030000' AS DateTime2), N'Eritreja', N'Eritreja', N'Država Eritreja')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (29, CAST(N'2020-06-22T15:49:25.4500000' AS DateTime2), N'Estonija', N'Estonija', N'Republika Estonija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (30, CAST(N'2020-06-22T15:49:26.1340000' AS DateTime2), N'Etiopija', N'Etiopija', N'Savezna Demokratska Republika Etiopija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (31, CAST(N'2020-06-22T15:49:26.7680000' AS DateTime2), N'Fidži', N'Fidži', N'Republika Fidži')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (32, CAST(N'2020-06-22T15:49:27.4620000' AS DateTime2), N'Filipini', N'Filipini', N'Republika Filipini')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (33, CAST(N'2020-06-22T15:49:29.1650000' AS DateTime2), N'Finska', N'Finska', N'Republika Finska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (34, CAST(N'2020-06-22T15:49:29.7760000' AS DateTime2), N'Francuska', N'Francuska', N'Francuska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (35, CAST(N'2020-06-22T15:49:30.3670000' AS DateTime2), N'Gabon', N'Gabon', N'Gabonska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (36, CAST(N'2020-06-22T15:49:31.6890000' AS DateTime2), N'Gambija', N'Gambija', N'Republika Gambija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (37, CAST(N'2020-06-22T15:49:32.5010000' AS DateTime2), N'Gana', N'Gana', N'Republika Gana')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (38, CAST(N'2020-06-22T15:49:33.2460000' AS DateTime2), N'Grčka', N'Grčka', N'Helenska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (39, CAST(N'2020-06-22T15:49:33.8960000' AS DateTime2), N'Grenada', N'Grenada', N'Grenada')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (40, CAST(N'2020-06-22T15:49:34.7500000' AS DateTime2), N'Gruzija', N'Gruzija', N'Gruzija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (41, CAST(N'2020-06-22T15:49:35.7000000' AS DateTime2), N'Gvajana', N'Gvajana', N'Republika Gvajana')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (42, CAST(N'2020-06-22T15:49:36.4470000' AS DateTime2), N'Gvatemala', N'Gvatemala', N'Republika Gvatemala')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (43, CAST(N'2020-06-22T15:49:37.1460000' AS DateTime2), N'Gvineja', N'Gvineja', N'Republika Gvineja')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (44, CAST(N'2020-06-22T15:49:39.6270000' AS DateTime2), N'Gvineja Bisau', N'Gvineja Bisau', N'Republika Gvineja Bisau')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (45, CAST(N'2020-06-22T15:49:40.3050000' AS DateTime2), N'Haiti', N'Haiti', N'Republika Haiti')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (46, CAST(N'2020-06-22T15:49:41.3950000' AS DateTime2), N'Honduras', N'Honduras', N'Republika Honduras')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (47, CAST(N'2020-06-22T15:49:42.1830000' AS DateTime2), N'Hrvatska', N'Hrvatska', N'Republika Hrvatska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (48, CAST(N'2020-06-22T15:49:42.8070000' AS DateTime2), N'Indija', N'Indija', N'Republika Indija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (49, CAST(N'2020-06-22T15:49:43.5690000' AS DateTime2), N'Indonezija', N'Indonezija', N'Republika Indonezija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (50, CAST(N'2020-06-22T15:49:44.1630000' AS DateTime2), N'Irak', N'Irak', N'Republika Irak')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (51, CAST(N'2020-06-22T15:49:44.7580000' AS DateTime2), N'Iran', N'Iran', N'Islamska Republika Iran')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (52, CAST(N'2020-06-22T15:49:45.3270000' AS DateTime2), N'Irska', N'Irska', N'Irska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (53, CAST(N'2020-06-22T15:49:46.3820000' AS DateTime2), N'Island', N'Island', N'Republika Island')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (54, CAST(N'2020-06-22T15:49:47.2470000' AS DateTime2), N'Italija', N'Italija', N'Republika Italija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (55, CAST(N'2020-06-22T15:49:47.8310000' AS DateTime2), N'Izrael', N'Izrael', N'Država Izrael')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (56, CAST(N'2020-06-22T15:49:48.7900000' AS DateTime2), N'Jamajka', N'Jamajka', N'Jamajka')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (57, CAST(N'2020-06-22T15:49:50.2440000' AS DateTime2), N'Japan', N'Japan', N'Japan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (58, CAST(N'2020-06-22T15:49:51.2130000' AS DateTime2), N'Jemen', N'Jemen', N'Republika Jemen')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (59, CAST(N'2020-06-22T15:49:52.1970000' AS DateTime2), N'Jordan', N'Jordan', N'Hašemitska Kraljevina Jordan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (60, CAST(N'2020-06-22T15:49:52.9600000' AS DateTime2), N'Južna Afrika', N'Južna Afrika', N'Republika Južna Afrika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (61, CAST(N'2020-06-22T15:49:53.6630000' AS DateTime2), N'Južni Sudan', N'Južni Sudan', N'Republika Južni Sudan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (62, CAST(N'2020-06-22T15:49:54.5750000' AS DateTime2), N'Kabo Verde', N'Kabo Verde', N'Republika Kabo Verde')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (63, CAST(N'2020-06-22T15:49:55.1810000' AS DateTime2), N'Kambodža', N'Kambodža', N'Kraljevina Kambodža')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (64, CAST(N'2020-06-22T15:49:56.0480000' AS DateTime2), N'Kamerun', N'Kamerun', N'Republika Kamerun')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (65, CAST(N'2020-06-22T15:49:56.6540000' AS DateTime2), N'Kanada', N'Kanada', N'Kanada')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (66, CAST(N'2020-06-22T15:49:57.3640000' AS DateTime2), N'Katar', N'Katar', N'Država Katar')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (67, CAST(N'2020-06-22T15:49:58.0820000' AS DateTime2), N'Kazahstan', N'Kazahstan', N'Republika Kazahstan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (68, CAST(N'2020-06-22T15:49:59.0720000' AS DateTime2), N'Kenija', N'Kenija', N'Republika Kenija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (69, CAST(N'2020-06-22T15:50:00.1960000' AS DateTime2), N'Kina', N'Kina', N'Narodna Republika Kina')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (70, CAST(N'2020-06-22T15:50:01.8880000' AS DateTime2), N'Kirgistan', N'Kirgistan', N'Kirgiska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (71, CAST(N'2020-06-22T15:50:02.9410000' AS DateTime2), N'Kiribati', N'Kiribati', N'Republika Kiribati')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (72, CAST(N'2020-06-22T15:50:03.5300000' AS DateTime2), N'Kolumbija', N'Kolumbija', N'Republika Kolumbija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (73, CAST(N'2020-06-22T15:50:04.1700000' AS DateTime2), N'Komori', N'Komori', N'Unija Komorâ')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (74, CAST(N'2020-06-22T15:50:04.7730000' AS DateTime2), N'Kongo', N'Kongo', N'Republika Kongo')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (75, CAST(N'2020-06-22T15:50:05.3740000' AS DateTime2), N'Kostarika', N'Kostarika', N'Republika Kostarika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (76, CAST(N'2020-06-22T15:50:05.9410000' AS DateTime2), N'Kuba', N'Kuba', N'Republika Kuba')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (77, CAST(N'2020-06-22T15:50:06.5570000' AS DateTime2), N'Kuvajt', N'Kuvajt', N'Država Kuvajt')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (78, CAST(N'2020-06-22T15:50:07.3020000' AS DateTime2), N'Laoska Narodna Demokratska Republika', N'Laoska Narodna Demokratska Republika', N'Laoska Narodna Demokratska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (79, CAST(N'2020-06-22T15:50:07.9890000' AS DateTime2), N'Latvija', N'Latvija', N'Republika Latvija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (80, CAST(N'2020-06-22T15:50:08.6070000' AS DateTime2), N'Lesoto', N'Lesoto', N'Kraljevina Lesoto')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (81, CAST(N'2020-06-22T15:50:11.8200000' AS DateTime2), N'Libanon', N'Libanon', N'Libanonska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (82, CAST(N'2020-06-22T15:50:12.4860000' AS DateTime2), N'Liberija', N'Liberija', N'Republika Liberija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (83, CAST(N'2020-06-22T15:50:13.3900000' AS DateTime2), N'Libija', N'Libija', N'Libija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (84, CAST(N'2020-06-22T15:50:14.1710000' AS DateTime2), N'Lihtenštajn', N'Lihtenštajn', N'Kneževina Lihtenštajn')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (85, CAST(N'2020-06-22T15:50:14.7130000' AS DateTime2), N'Litva', N'Litva', N'Republika Litva')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (86, CAST(N'2020-06-22T15:50:15.3910000' AS DateTime2), N'Luksemburg', N'Luksemburg', N'Veliko Vojvodstvo Luksemburg')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (87, CAST(N'2020-06-22T15:50:15.9660000' AS DateTime2), N'Madagaskar', N'Madagaskar', N'Republika Madagaskar')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (88, CAST(N'2020-06-22T15:50:16.5640000' AS DateTime2), N'Mađarska', N'Mađarska', N'Mađarska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (89, CAST(N'2020-06-22T15:50:17.1450000' AS DateTime2), N'Makedonija', N'Makedonija', N'Republika Makedonija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (90, CAST(N'2020-06-22T15:50:17.7210000' AS DateTime2), N'Malavi', N'Malavi', N'Republika Malavi')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (91, CAST(N'2020-06-22T15:50:18.4150000' AS DateTime2), N'Maldivi', N'Maldivi', N'Republika Maldivi')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (92, CAST(N'2020-06-22T15:50:18.9650000' AS DateTime2), N'Malezija', N'Malezija', N'Malezija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (93, CAST(N'2020-06-22T15:50:19.5430000' AS DateTime2), N'Mali', N'Mali', N'Republika Mali')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (94, CAST(N'2020-06-22T15:50:20.2330000' AS DateTime2), N'Malta', N'Malta', N'Republika Malta')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (95, CAST(N'2020-06-22T15:50:21.7230000' AS DateTime2), N'Maroko', N'Maroko', N'Kraljevina Maroko')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (96, CAST(N'2020-06-22T15:50:22.3890000' AS DateTime2), N'Maršalovi Otoci', N'Maršalovi Otoci', N'Republika Maršalovi Otoci')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (97, CAST(N'2020-06-22T15:50:22.9780000' AS DateTime2), N'Mauricijus', N'Mauricijus', N'Republika Mauricijus')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (98, CAST(N'2020-06-22T15:50:23.7110000' AS DateTime2), N'Mauritanija', N'Mauritanija', N'Islamska Republika Mauritanija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (99, CAST(N'2020-06-22T15:50:24.3090000' AS DateTime2), N'Meksiko', N'Meksiko', N'Sjedinjene Meksičke Države')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (100, CAST(N'2020-06-22T15:50:24.8940000' AS DateTime2), N'Mikronezija', N'Mikronezija', N'Savezne Države Mikronezije')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (101, CAST(N'2020-06-22T15:50:25.5760000' AS DateTime2), N'Mjanmar', N'Mjanmar', N'Republika Unija Mjanmar')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (102, CAST(N'2020-06-22T15:50:26.2450000' AS DateTime2), N'Monako', N'Monako', N'Kneževina Monako')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (103, CAST(N'2020-06-22T15:50:26.8500000' AS DateTime2), N'Mongolija', N'Mongolija', N'Mongolija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (104, CAST(N'2020-06-22T15:50:27.4520000' AS DateTime2), N'Mozambik', N'Mozambik', N'Republika Mozambik')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (105, CAST(N'2020-06-22T15:50:28.1420000' AS DateTime2), N'Namibija', N'Namibija', N'Republika Namibija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (106, CAST(N'2020-06-22T15:50:28.8000000' AS DateTime2), N'Nauru', N'Nauru', N'Republika Nauru')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (107, CAST(N'2020-06-22T15:50:29.4650000' AS DateTime2), N'Nepal', N'Nepal', N'Savezna Demokratska Republika Nepal')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (108, CAST(N'2020-06-22T15:50:31.2130000' AS DateTime2), N'Niger', N'Niger', N'Republika Niger')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (109, CAST(N'2020-06-22T15:50:31.9010000' AS DateTime2), N'Nigerija', N'Nigerija', N'Savezna Republika Nigerija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (110, CAST(N'2020-06-22T15:50:32.6160000' AS DateTime2), N'Nikaragva', N'Nikaragva', N'Republika Nikaragva')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (111, CAST(N'2020-06-22T15:50:33.2220000' AS DateTime2), N'Nizozemska', N'Nizozemska', N'Kraljevina Nizozemska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (112, CAST(N'2020-06-22T15:50:33.7340000' AS DateTime2), N'Norveška', N'Norveška', N'Kraljevina Norveška')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (113, CAST(N'2020-06-22T15:50:34.3800000' AS DateTime2), N'Novi Zeland', N'Novi Zeland', N'Novi Zeland')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (114, CAST(N'2020-06-22T15:50:35.1860000' AS DateTime2), N'Njemačka', N'Njemačka', N'Savezna Republika Njemačka')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (115, CAST(N'2020-06-22T15:50:35.7980000' AS DateTime2), N'Oman', N'Oman', N'Sultanat Oman')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (116, CAST(N'2020-06-22T15:50:36.3610000' AS DateTime2), N'Pakistan', N'Pakistan', N'Islamska Republika Pakistan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (117, CAST(N'2020-06-22T15:50:36.9910000' AS DateTime2), N'Palau', N'Palau', N'Republika Palau')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (118, CAST(N'2020-06-22T15:50:37.5860000' AS DateTime2), N'Panama', N'Panama', N'Republika Panama')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (119, CAST(N'2020-06-22T15:50:38.2840000' AS DateTime2), N'Papua Nova Gvineja', N'Papua Nova Gvineja', N'Papua Nova Gvineja')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (120, CAST(N'2020-06-22T15:50:38.8370000' AS DateTime2), N'Paragvaj', N'Paragvaj', N'Republika Paragvaj')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (121, CAST(N'2020-06-22T15:50:39.5990000' AS DateTime2), N'Peru', N'Peru', N'Republika Peru')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (122, CAST(N'2020-06-22T15:50:40.2130000' AS DateTime2), N'Poljska', N'Poljska', N'Republika Poljska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (123, CAST(N'2020-06-22T15:50:40.9280000' AS DateTime2), N'Portugal', N'Portugal', N'Portugalska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (124, CAST(N'2020-06-22T15:50:43.7380000' AS DateTime2), N'Republika Koreja', N'Republika Koreja', N'Republika Koreja')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (125, CAST(N'2020-06-22T15:50:44.3760000' AS DateTime2), N'Republika Moldova', N'Republika Moldova', N'Republika Moldova')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (126, CAST(N'2020-06-22T15:50:44.9690000' AS DateTime2), N'Ruanda', N'Ruanda', N'Republika Ruanda')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (127, CAST(N'2020-06-22T15:50:45.6300000' AS DateTime2), N'Rumunija', N'Rumunija', N'Rumunija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (128, CAST(N'2020-06-22T15:50:46.9170000' AS DateTime2), N'Ruska Federacija', N'Ruska Federacija', N'Ruska Federacija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (129, CAST(N'2020-06-22T15:50:46.2030000' AS DateTime2), N'Salomonovi Otoci', N'Salomonovi Otoci', N'Salomonovi Otoci')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (130, CAST(N'2020-06-22T15:50:47.7080000' AS DateTime2), N'Samoa', N'Samoa', N'Nezavisna Država Samoa')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (131, CAST(N'2020-06-22T15:50:48.4390000' AS DateTime2), N'San Marino', N'San Marino', N'Republika San Marino')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (132, CAST(N'2020-06-22T15:50:49.0570000' AS DateTime2), N'Saudijska Arabija', N'Saudijska Arabija', N'Kraljevina Saudijska Arabija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (133, CAST(N'2020-06-22T15:50:49.6290000' AS DateTime2), N'Sejšeli', N'Sejšeli', N'Republika Sejšeli')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (134, CAST(N'2020-06-22T15:50:50.3990000' AS DateTime2), N'Senegal', N'Senegal', N'Republika Senegal')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (135, CAST(N'2020-06-22T15:50:51.7800000' AS DateTime2), N'Sijera Leone', N'Sijera Leone', N'Republika Sijera Leone')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (136, CAST(N'2020-06-22T15:50:52.3330000' AS DateTime2), N'Singapur', N'Singapur', N'Republika Singapur')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (137, CAST(N'2020-06-22T15:50:53.3510000' AS DateTime2), N'Sirijska Arapska Republika', N'Sirijska Arapska Republika', N'Sirijska Arapska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (138, CAST(N'2020-06-22T15:50:53.9680000' AS DateTime2), N'Sjedinjene Američke Države', N'Sjedinjene Američke Države', N'Sjedinjene Američke Države')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (139, CAST(N'2020-06-22T15:50:54.6300000' AS DateTime2), N'Slovačka', N'Slovačka', N'Slovačka Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (140, CAST(N'2020-06-22T15:50:55.4770000' AS DateTime2), N'Slovenija', N'Slovenija', N'Republika Slovenija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (141, CAST(N'2020-06-22T15:50:56.0460000' AS DateTime2), N'Somalija', N'Somalija', N'Somalijska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (142, CAST(N'2020-06-22T15:50:56.6430000' AS DateTime2), N'Srbija', N'Srbija', N'Republika Srbija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (143, CAST(N'2020-06-22T15:50:57.2120000' AS DateTime2), N'Srednjoafrička Republika', N'Srednjoafrička Republika', N'Srednjoafrička Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (144, CAST(N'2020-06-22T15:50:57.8450000' AS DateTime2), N'Sudan', N'Sudan', N'Republika Sudan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (145, CAST(N'2020-06-22T15:50:58.4300000' AS DateTime2), N'Surinam', N'Surinam', N'Republika Surinam')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (146, CAST(N'2020-06-22T15:50:59.1340000' AS DateTime2), N'Svazi', N'Svazi', N'Kraljevina Svazi')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (147, CAST(N'2020-06-22T15:50:59.8310000' AS DateTime2), N'Sveta Lucija', N'Sveta Lucija', N'Sveta Lucija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (148, CAST(N'2020-06-22T15:51:00.4460000' AS DateTime2), N'Sveti Kristofor i Nevis', N'Sveti Kristofor i Nevis', N'Sveti Kristofor i Nevis')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (149, CAST(N'2020-06-22T15:51:01.2070000' AS DateTime2), N'Sveti Toma i Prinsipe', N'Sveti Toma i Prinsipe', N'Demokratska Republika Sveti Toma i Prinsipe')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (150, CAST(N'2020-06-22T15:51:02.8610000' AS DateTime2), N'Sveti Vincent i Grenadini', N'Sveti Vincent i Grenadini', N'Sveti Vincent i Grenadini')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (151, CAST(N'2020-06-22T15:51:03.6360000' AS DateTime2), N'Španjolska', N'Španjolska', N'Kraljevina Španjolska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (152, CAST(N'2020-06-22T15:51:04.2480000' AS DateTime2), N'Šri Lanka', N'Šri Lanka', N'Demokratska Socijalistička Republika Šri Lanka')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (153, CAST(N'2020-06-22T15:51:05.1420000' AS DateTime2), N'Švedska', N'Švedska', N'Kraljevina Švedska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (154, CAST(N'2020-06-22T15:51:05.7020000' AS DateTime2), N'Švicarska', N'Švicarska', N'Švicarska Konfederacija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (155, CAST(N'2020-06-22T15:51:06.2650000' AS DateTime2), N'Tadžikistan', N'Tadžikistan', N'Republika Tadžikistan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (156, CAST(N'2020-06-22T15:51:06.8440000' AS DateTime2), N'Tajland', N'Tajland', N'Kraljevina Tajland')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (157, CAST(N'2020-06-22T15:51:07.9550000' AS DateTime2), N'Timor-Leste', N'Timor-Leste', N'Demokratska Republika Timor- Leste')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (158, CAST(N'2020-06-22T15:51:08.4840000' AS DateTime2), N'Togo', N'Togo', N'Togoanska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (159, CAST(N'2020-06-22T15:51:09.1500000' AS DateTime2), N'Tonga', N'Tonga', N'Kraljevina Tonga')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (160, CAST(N'2020-06-22T15:51:09.8520000' AS DateTime2), N'Trinidad i Tobago', N'tit', N'Republika Trinidad i Tobago')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (161, CAST(N'2020-06-22T15:51:10.3900000' AS DateTime2), N'Tunis', N'Tunis', N'Republika Tunis')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (162, CAST(N'2020-06-22T15:51:10.9940000' AS DateTime2), N'Andora', N'Andora', N'Kneževina Andora')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (163, CAST(N'2020-06-22T15:51:11.8620000' AS DateTime2), N'Turkmenistan', N'Turkmenistan', N'Turkmenistan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (164, CAST(N'2020-06-22T15:51:12.4830000' AS DateTime2), N'Angola', N'Angola', N'Republika Angola')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (165, CAST(N'2020-06-22T15:51:13.4240000' AS DateTime2), N'Antigva i Barbuda', N'Antigva i Barbuda', N'Antigva i Barbuda')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (166, CAST(N'2020-06-22T15:51:15.2120000' AS DateTime2), N'Turska', N'Turska', N'Republika Turska')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (167, CAST(N'2020-06-22T15:51:15.7660000' AS DateTime2), N'Tuvalu', N'Tuvalu', N'Tuvalu')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (168, CAST(N'2020-06-22T15:51:16.4050000' AS DateTime2), N'Argentina', N'Argentina', N'Argentinska Republika')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (169, CAST(N'2020-06-22T15:51:17.4540000' AS DateTime2), N'Uganda', N'Uganda', N'Republika Uganda')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (170, CAST(N'2020-06-22T15:51:18.0640000' AS DateTime2), N'Armenija', N'Armenija', N'Republika Armenija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (171, CAST(N'2020-06-22T15:51:19.1330000' AS DateTime2), N'Ujedinjena Kraljevina Velike Britanije i Sjeverne Irske', N'uk', N'Ujedinjena Kraljevina Velike Britanije i Sjeverne Irske')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (172, CAST(N'2020-06-22T15:51:20.1250000' AS DateTime2), N'Australija', N'Australija', N'Australija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (173, CAST(N'2020-06-22T15:51:20.8220000' AS DateTime2), N'Austrija', N'Austrija', N'Republika Austrija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (174, CAST(N'2020-06-22T15:51:21.3470000' AS DateTime2), N'Ujedinjena Republika Tanzanija', N'tan', N'Ujedinjena Republika Tanzanija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (175, CAST(N'2020-06-22T15:51:22.0980000' AS DateTime2), N'Ujedinjeni Arapski Emirati', N'uae', N'Ujedinjeni Arapski Emirati')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (176, CAST(N'2020-06-22T15:51:22.6790000' AS DateTime2), N'Azerbejdžan', N'Azerbejdžan', N'Republika Azerbejdžan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (177, CAST(N'2020-06-22T15:51:23.7400000' AS DateTime2), N'Ukrajina', N'Ukrajina', N'Ukrajina')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (178, CAST(N'2020-06-22T15:51:26.0030000' AS DateTime2), N'Bahami', N'Bahami', N'Zajednica Bahamâ')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (179, CAST(N'2020-06-22T15:51:27.1450000' AS DateTime2), N'Urugvaj', N'Urugvaj', N'Istočna Republika Urugvaj')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (180, CAST(N'2020-06-22T15:51:27.7600000' AS DateTime2), N'Bahrein', N'Bahrein', N'Kraljevina Bahrein')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (181, CAST(N'2020-06-22T15:51:28.3230000' AS DateTime2), N'Uzbekistan', N'Uzbekistan', N'Republika Uzbekistan')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (182, CAST(N'2020-06-22T15:51:28.9140000' AS DateTime2), N'Bangladeš', N'Bangladeš', N'Narodna Republika Bangladeš')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (183, CAST(N'2020-06-22T15:51:29.4870000' AS DateTime2), N'Vanuatu', N'Vanuatu', N'Republika Vanuatu')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (184, CAST(N'2020-06-22T15:51:30.6250000' AS DateTime2), N'Barbados', N'Barbados', N'Barbados')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (185, CAST(N'2020-06-22T15:51:31.3810000' AS DateTime2), N'Venezuela', N'Venezuela', N'Bolivarijanska Republika Venezuela')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (186, CAST(N'2020-06-22T15:51:32.0320000' AS DateTime2), N'Belgija', N'Belgija', N'Kraljevina Belgija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (187, CAST(N'2020-06-22T15:51:32.8280000' AS DateTime2), N'Vijetnam', N'Vijetnam', N'Socijalistička Republika Vijetnam')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (188, CAST(N'2020-06-22T15:51:34.7300000' AS DateTime2), N'Belize', N'Belize', N'Belize')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (189, CAST(N'2020-06-22T15:51:35.5790000' AS DateTime2), N'Zambija', N'Zambija', N'Republika Zambija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (190, CAST(N'2020-06-22T15:51:36.1430000' AS DateTime2), N'Benin', N'Benin', N'Republika Benin')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (191, CAST(N'2020-06-22T15:51:36.7810000' AS DateTime2), N'Zimbabve', N'Zimbabve', N'Republika Zimbabve')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (192, CAST(N'2020-06-22T15:51:37.3590000' AS DateTime2), N'Bjelorusija', N'Bjelorusija', N'Republika Bjelorusija')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (193, CAST(N'2020-06-22T15:51:38.0400000' AS DateTime2), N'Nepoznato', N'Nepoznato', N'Nepoznato')
+GO
+INSERT [dbo].[lkp_country] ([id], [last_updated], [_key], [name], [official_name]) VALUES (194, CAST(N'2020-06-22T15:51:38.7300000' AS DateTime2), N'Bocvana', N'Bocvana', N'Republika Bocvana')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_country] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_duty] ON 
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T15:52:07.9130000' AS DateTime2), N'head of association', N'starješina saveza')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T15:52:08.8080000' AS DateTime2), N'chief of association', N'načelnik saveza')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-22T15:52:09.3710000' AS DateTime2), N'head of group', N'starješina odreda')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-22T15:52:09.9500000' AS DateTime2), N'chief of group', N'načelnik odreda')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-22T15:52:10.6850000' AS DateTime2), N'head of den', N'starješina čete')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-22T15:52:11.2460000' AS DateTime2), N'chief of den', N'načelnik čete')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (7, CAST(N'2020-06-22T15:52:11.8460000' AS DateTime2), N'secretary', N'sekretar')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (8, CAST(N'2020-06-22T15:52:12.4420000' AS DateTime2), N'inventory associate', N'ekonom')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (9, CAST(N'2020-06-22T15:52:14.6970000' AS DateTime2), N'patrol leader', N'vodnik')
+GO
+INSERT [dbo].[lkp_duty] ([id], [last_updated], [_key], [name]) VALUES (10, CAST(N'2020-06-22T15:52:15.3380000' AS DateTime2), N'pack leader', N'predvodnik')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_duty] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_entity] ON 
+GO
+INSERT [dbo].[lkp_entity] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T16:02:13.5020000' AS DateTime2), N'fbih', N'Federacija Bosne i Hercegovine')
+GO
+INSERT [dbo].[lkp_entity] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T16:02:14.1910000' AS DateTime2), N'rs', N'Republika Srpska')
+GO
+INSERT [dbo].[lkp_entity] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-22T16:02:14.7870000' AS DateTime2), N'bd', N'Brčko Distrikt')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_entity] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_gender] ON 
+GO
+INSERT [dbo].[lkp_gender] ([id], [last_updated], [_key], [name], [abbreviation]) VALUES (1, CAST(N'2020-06-21T00:42:58.3350000' AS DateTime2), N'female', N'ženski', N'F')
+GO
+INSERT [dbo].[lkp_gender] ([id], [last_updated], [_key], [name], [abbreviation]) VALUES (2, CAST(N'2020-06-21T00:42:59.0370000' AS DateTime2), N'male', N'muški', N'M')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_gender] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_municipality] ON 
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (225, CAST(N'2020-06-22T16:06:22.9200000' AS DateTime2), N'Bihać', N'Bihać', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (226, CAST(N'2020-06-22T16:06:24.1730000' AS DateTime2), N'Bosanska Krupa', N'Bosanska Krupa', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (227, CAST(N'2020-06-22T16:06:24.7630000' AS DateTime2), N'Bosanski Petrovac', N'Bosanski Petrovac', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (228, CAST(N'2020-06-22T16:06:25.3810000' AS DateTime2), N'Cazin', N'Cazin', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (229, CAST(N'2020-06-22T16:06:25.9220000' AS DateTime2), N'Ključ', N'Ključ', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (230, CAST(N'2020-06-22T16:06:26.4840000' AS DateTime2), N'Sanski Most', N'Sanski Most', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (231, CAST(N'2020-06-22T16:06:27.0430000' AS DateTime2), N'Velika Kladuša', N'Velika Kladuša', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (232, CAST(N'2020-06-22T16:06:27.7400000' AS DateTime2), N'Bužim', N'Bužim', 1, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (233, CAST(N'2020-06-22T16:06:28.3870000' AS DateTime2), N'Orašje', N'Orašje', 2, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (234, CAST(N'2020-06-22T16:06:28.9730000' AS DateTime2), N'Odžak', N'Odžak', 2, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (235, CAST(N'2020-06-22T16:06:29.8260000' AS DateTime2), N'Domaljevac-Šamac', N'Domaljevac-Šamac', 2, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (236, CAST(N'2020-06-22T16:06:30.4170000' AS DateTime2), N'Banovići', N'Banovići', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (237, CAST(N'2020-06-22T16:06:30.9940000' AS DateTime2), N'Gračanica', N'Gračanica', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (238, CAST(N'2020-06-22T16:06:31.5380000' AS DateTime2), N'Gradačac', N'Gradačac', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (239, CAST(N'2020-06-22T16:06:32.1320000' AS DateTime2), N'Kalesija', N'Kalesija', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (240, CAST(N'2020-06-22T16:06:32.7910000' AS DateTime2), N'Kladanj', N'Kladanj', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (241, CAST(N'2020-06-22T16:06:33.4270000' AS DateTime2), N'Čelić', N'Čelić', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (242, CAST(N'2020-06-22T16:06:33.9640000' AS DateTime2), N'Lukavac', N'Lukavac', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (243, CAST(N'2020-06-22T16:06:34.5720000' AS DateTime2), N'Srebrenik', N'Srebrenik', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (244, CAST(N'2020-06-22T16:06:35.2930000' AS DateTime2), N'Tuzla', N'Tuzla', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (245, CAST(N'2020-06-22T16:06:36.1460000' AS DateTime2), N'Živinice', N'Živinice', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (246, CAST(N'2020-06-22T16:06:36.7220000' AS DateTime2), N'Doboj-Istok', N'Doboj-Istok', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (247, CAST(N'2020-06-22T16:06:37.3010000' AS DateTime2), N'Sapna', N'Sapna', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (248, CAST(N'2020-06-22T16:06:39.1600000' AS DateTime2), N'Teočak', N'Teočak', 3, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (249, CAST(N'2020-06-22T16:06:39.8040000' AS DateTime2), N'Breza', N'Breza', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (250, CAST(N'2020-06-22T16:06:40.4040000' AS DateTime2), N'Kakanj', N'Kakanj', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (251, CAST(N'2020-06-22T16:06:41.3420000' AS DateTime2), N'Maglaj', N'Maglaj', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (252, CAST(N'2020-06-22T16:06:42.0280000' AS DateTime2), N'Olovo', N'Olovo', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (253, CAST(N'2020-06-22T16:06:42.7430000' AS DateTime2), N'Tešanj', N'Tešanj', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (254, CAST(N'2020-06-22T16:06:43.3440000' AS DateTime2), N'Vareš', N'Vareš', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (255, CAST(N'2020-06-22T16:06:43.8580000' AS DateTime2), N'Visoko', N'Visoko', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (256, CAST(N'2020-06-22T16:06:44.7870000' AS DateTime2), N'Zavidovići', N'Zavidovići', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (257, CAST(N'2020-06-22T16:06:45.4530000' AS DateTime2), N'Zenica', N'Zenica', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (258, CAST(N'2020-06-22T16:06:46.0660000' AS DateTime2), N'Žepče', N'Žepče', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (259, CAST(N'2020-06-22T16:06:46.8130000' AS DateTime2), N'Doboj-Jug', N'Doboj-Jug', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (260, CAST(N'2020-06-22T16:06:47.6980000' AS DateTime2), N'Usora', N'Usora', 4, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (261, CAST(N'2020-06-22T16:06:50.2930000' AS DateTime2), N'Goražde', N'Goražde', 5, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (262, CAST(N'2020-06-22T16:06:50.9390000' AS DateTime2), N'Foča - Ustikolina', N'Foča - Ustikolina', 5, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (263, CAST(N'2020-06-22T16:06:51.5180000' AS DateTime2), N'Pale FBiH', N'Pale FBiH', 5, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (264, CAST(N'2020-06-22T16:06:52.1170000' AS DateTime2), N'Bugojno', N'Bugojno', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (265, CAST(N'2020-06-22T16:06:52.6780000' AS DateTime2), N'Busovača', N'Busovača', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (266, CAST(N'2020-06-22T16:06:53.8140000' AS DateTime2), N'Donji Vakuf', N'Donji Vakuf', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (267, CAST(N'2020-06-22T16:06:54.6730000' AS DateTime2), N'Dobretići', N'Dobretići', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (268, CAST(N'2020-06-22T16:06:55.5020000' AS DateTime2), N'Fojnica', N'Fojnica', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (269, CAST(N'2020-06-22T16:06:56.0530000' AS DateTime2), N'Gornji Vakuf - Uskoplje', N'Gornji Vakuf - Uskoplje', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (270, CAST(N'2020-06-22T16:06:56.6680000' AS DateTime2), N'Jajce', N'Jajce', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (271, CAST(N'2020-06-22T16:06:57.2930000' AS DateTime2), N'Kiseljak', N'Kiseljak', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (272, CAST(N'2020-06-22T16:06:57.9680000' AS DateTime2), N'Kreševo', N'Kreševo', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (273, CAST(N'2020-06-22T16:07:43.5910000' AS DateTime2), N'Novi Travnik', N'Novi Travnik', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (274, CAST(N'2020-06-22T16:07:44.4140000' AS DateTime2), N'Travnik', N'Travnik', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (275, CAST(N'2020-06-22T16:07:45.2110000' AS DateTime2), N'Vitez', N'Vitez', 6, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (276, CAST(N'2020-06-22T16:07:46.0060000' AS DateTime2), N'Čapljina', N'Čapljina', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (277, CAST(N'2020-06-22T16:07:46.5400000' AS DateTime2), N'Čitluk', N'Čitluk', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (278, CAST(N'2020-06-22T16:07:47.0990000' AS DateTime2), N'Mostar', N'Mostar', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (279, CAST(N'2020-06-22T16:07:47.6680000' AS DateTime2), N'Jablanica', N'Jablanica', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (280, CAST(N'2020-06-22T16:07:48.4210000' AS DateTime2), N'Konjic', N'Konjic', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (281, CAST(N'2020-06-22T16:07:49.0830000' AS DateTime2), N'Neum', N'Neum', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (282, CAST(N'2020-06-22T16:07:49.6500000' AS DateTime2), N'Prozor', N'Prozor', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (283, CAST(N'2020-06-22T16:07:50.2330000' AS DateTime2), N'Ravno', N'Ravno', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (284, CAST(N'2020-06-22T16:07:50.9290000' AS DateTime2), N'Stolac', N'Stolac', 7, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (285, CAST(N'2020-06-22T16:07:51.4940000' AS DateTime2), N'Široki Brijeg	', N'Široki Brijeg	', 8, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (286, CAST(N'2020-06-22T16:07:52.1640000' AS DateTime2), N'Grude', N'Grude', 8, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (287, CAST(N'2020-06-22T16:07:52.8360000' AS DateTime2), N'Ljubuški', N'Ljubuški', 8, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (288, CAST(N'2020-06-22T16:07:53.4570000' AS DateTime2), N'Posušje', N'Posušje', 8, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (289, CAST(N'2020-06-22T16:07:54.2540000' AS DateTime2), N'Hadžići', N'Hadžići', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (290, CAST(N'2020-06-22T16:07:55.8510000' AS DateTime2), N'Ilijaš', N'Ilijaš', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (291, CAST(N'2020-06-22T16:07:56.3800000' AS DateTime2), N'Centar', N'Centar', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (292, CAST(N'2020-06-22T16:07:56.9650000' AS DateTime2), N'Ilidža', N'Ilidža', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (293, CAST(N'2020-06-22T16:07:57.4830000' AS DateTime2), N'Novo Sarajevo', N'Novo Sarajevo', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (294, CAST(N'2020-06-22T16:07:58.1400000' AS DateTime2), N'Vogošća', N'Vogošća', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (295, CAST(N'2020-06-22T16:07:58.7160000' AS DateTime2), N'Novi Grad - FBiH', N'Novi Grad', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (296, CAST(N'2020-06-22T16:07:59.2760000' AS DateTime2), N'Stari Grad', N'Stari Grad', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (297, CAST(N'2020-06-22T16:07:59.8520000' AS DateTime2), N'Trnovo - FBiH', N'Trnovo (FBiH)', 9, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (298, CAST(N'2020-06-22T16:08:00.4450000' AS DateTime2), N'Livno', N'Livno', 10, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (299, CAST(N'2020-06-22T16:08:01.0600000' AS DateTime2), N'Tomislavgrad', N'Tomislavgrad', 10, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (300, CAST(N'2020-06-22T16:08:01.8410000' AS DateTime2), N'Kupres - FBiH', N'Kupres', 10, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (301, CAST(N'2020-06-22T16:08:02.4070000' AS DateTime2), N'Glamoč', N'Glamoč', 10, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (302, CAST(N'2020-06-22T16:08:02.9550000' AS DateTime2), N'Bosansko Grahovo', N'Bosansko Grahovo', 10, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (303, CAST(N'2020-06-22T16:08:03.5820000' AS DateTime2), N'Drvar', N'Drvar', 10, 22, 1)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (304, CAST(N'2020-06-22T16:08:04.2000000' AS DateTime2), N'Berkovići', N'Berkovići', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (305, CAST(N'2020-06-22T16:08:04.8260000' AS DateTime2), N'Bijeljina', N'Bijeljina', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (306, CAST(N'2020-06-22T16:08:05.4900000' AS DateTime2), N'Bileća', N'Bileća', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (307, CAST(N'2020-06-22T16:08:07.2130000' AS DateTime2), N'Bosanska Kostajnica', N'Bosanska Kostajnica', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (308, CAST(N'2020-06-22T16:08:07.7960000' AS DateTime2), N'Bosanski Brod', N'Bosanski Brod', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (309, CAST(N'2020-06-22T16:08:08.3350000' AS DateTime2), N'Bratunac', N'Bratunac', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (310, CAST(N'2020-06-22T16:08:08.8630000' AS DateTime2), N'Čajniče', N'Čajniče', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (311, CAST(N'2020-06-22T16:08:09.4510000' AS DateTime2), N'Čelinac', N'Čelinac', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (312, CAST(N'2020-06-22T16:08:10.0810000' AS DateTime2), N'Derventa', N'Derventa', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (313, CAST(N'2020-06-22T16:08:10.6810000' AS DateTime2), N'Doboj', N'Doboj', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (314, CAST(N'2020-06-22T16:08:11.2710000' AS DateTime2), N'Donji Žabar', N'Donji Žabar', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (315, CAST(N'2020-06-22T16:08:11.8480000' AS DateTime2), N'Foča', N'Foča', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (316, CAST(N'2020-06-22T16:08:12.4850000' AS DateTime2), N'Gacko', N'Gacko', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (317, CAST(N'2020-06-22T16:08:13.0610000' AS DateTime2), N'Banja Luka', N'Banja Luka', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (318, CAST(N'2020-06-22T16:08:13.6200000' AS DateTime2), N'Bosanska Gradiška', N'Bosanska Gradiška', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (319, CAST(N'2020-06-22T16:08:14.4720000' AS DateTime2), N'Han Pijesak', N'Han Pijesak', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (320, CAST(N'2020-06-22T16:08:15.2130000' AS DateTime2), N'Istočni Drvar', N'Istočni Drvar', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (321, CAST(N'2020-06-22T16:08:15.8150000' AS DateTime2), N'Istočna Ilidža', N'Istočna Ilidža', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (322, CAST(N'2020-06-22T16:08:16.3900000' AS DateTime2), N'Istočni Mostar', N'Istočni Mostar', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (323, CAST(N'2020-06-22T16:08:16.9880000' AS DateTime2), N'Istočni Stari Grad', N'Istočni Stari Grad', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (324, CAST(N'2020-06-22T16:08:17.6040000' AS DateTime2), N'Istočno Novo Sarajevo', N'Istočno Novo Sarajevo', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (325, CAST(N'2020-06-22T16:08:18.1740000' AS DateTime2), N'Jezero', N'Jezero', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (326, CAST(N'2020-06-22T16:08:18.7220000' AS DateTime2), N'Kalinovik', N'Kalinovik', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (327, CAST(N'2020-06-22T16:08:20.3660000' AS DateTime2), N'Kneževo', N'Kneževo', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (328, CAST(N'2020-06-22T16:08:21.1170000' AS DateTime2), N'Kozarska Dubica', N'Kozarska Dubica', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (329, CAST(N'2020-06-22T16:08:21.6670000' AS DateTime2), N'Kotor Varoš', N'Kotor Varoš', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (330, CAST(N'2020-06-22T16:08:22.4540000' AS DateTime2), N'Krupa na Uni', N'Krupa na Uni', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (331, CAST(N'2020-06-22T16:08:23.2790000' AS DateTime2), N'Kupres - RS', N'Kupres', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (332, CAST(N'2020-06-22T16:08:23.8600000' AS DateTime2), N'Laktaši', N'Laktaši', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (333, CAST(N'2020-06-22T16:08:24.4200000' AS DateTime2), N'Ljubinje', N'Ljubinje', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (334, CAST(N'2020-06-22T16:08:25.0290000' AS DateTime2), N'Lopare', N'Lopare', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (335, CAST(N'2020-06-22T16:08:25.6750000' AS DateTime2), N'Milići', N'Milići', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (336, CAST(N'2020-06-22T16:08:26.3990000' AS DateTime2), N'Modriča', N'Modriča', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (337, CAST(N'2020-06-22T16:08:26.9560000' AS DateTime2), N'Mrkonjić Grad', N'Mrkonjić Grad', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (338, CAST(N'2020-06-22T16:08:27.5280000' AS DateTime2), N'Nevesinje', N'Nevesinje', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (339, CAST(N'2020-06-22T16:08:29.1490000' AS DateTime2), N'Novi Grad - RS', N'Novi Grad', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (340, CAST(N'2020-06-22T16:08:29.7430000' AS DateTime2), N'Novo Goražde', N'Novo Goražde', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (341, CAST(N'2020-06-22T16:08:30.4200000' AS DateTime2), N'Osmaci', N'Osmaci', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (342, CAST(N'2020-06-22T16:08:31.1520000' AS DateTime2), N'Oštra Luka', N'Oštra Luka', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (343, CAST(N'2020-06-22T16:08:31.7420000' AS DateTime2), N'Pale', N'Pale', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (344, CAST(N'2020-06-22T16:08:32.4340000' AS DateTime2), N'Pelagićevo', N'Pelagićevo', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (345, CAST(N'2020-06-22T16:08:33.4640000' AS DateTime2), N'Petrovac', N'Petrovac', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (346, CAST(N'2020-06-22T16:08:34.2300000' AS DateTime2), N'Petrovo', N'Petrovo', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (347, CAST(N'2020-06-22T16:08:34.8610000' AS DateTime2), N'Prijedor', N'Prijedor', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (348, CAST(N'2020-06-22T16:08:35.5920000' AS DateTime2), N'Prnjavor', N'Prnjavor', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (349, CAST(N'2020-06-22T16:08:36.3430000' AS DateTime2), N'Ribnik', N'Ribnik', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (350, CAST(N'2020-06-22T16:08:36.9690000' AS DateTime2), N'Rogatica', N'Rogatica', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (351, CAST(N'2020-06-22T16:08:38.1100000' AS DateTime2), N'Rudo', N'Rudo', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (352, CAST(N'2020-06-22T16:08:39.9720000' AS DateTime2), N'Šamac', N'Šamac', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (353, CAST(N'2020-06-22T16:08:40.7530000' AS DateTime2), N'Šekovići', N'Šekovići', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (354, CAST(N'2020-06-22T16:08:41.3780000' AS DateTime2), N'Šipovo', N'Šipovo', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (355, CAST(N'2020-06-22T16:08:42.6420000' AS DateTime2), N'Sokolac', N'Sokolac', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (356, CAST(N'2020-06-22T16:08:43.3040000' AS DateTime2), N'Srbac', N'Srbac', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (357, CAST(N'2020-06-22T16:08:44.2800000' AS DateTime2), N'Srebrenica', N'Srebrenica', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (358, CAST(N'2020-06-22T16:08:44.8120000' AS DateTime2), N'Stanari', N'Stanari', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (359, CAST(N'2020-06-22T16:08:45.4270000' AS DateTime2), N'Teslić', N'Teslić', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (360, CAST(N'2020-06-22T16:08:46.1630000' AS DateTime2), N'Trebinje', N'Trebinje', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (361, CAST(N'2020-06-22T16:08:46.7640000' AS DateTime2), N'Trnovo RS', N'Trnovo (RS)', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (362, CAST(N'2020-06-22T16:08:47.3740000' AS DateTime2), N'Ugljevik', N'Ugljevik', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (363, CAST(N'2020-06-22T16:08:48.0280000' AS DateTime2), N'Višegrad', N'Višegrad', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (364, CAST(N'2020-06-22T16:08:48.6020000' AS DateTime2), N'Vlasenica', N'Vlasenica', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (365, CAST(N'2020-06-22T16:08:49.2910000' AS DateTime2), N'Vukosavlje', N'Vukosavlje', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (366, CAST(N'2020-06-22T16:08:50.0100000' AS DateTime2), N'Zvornik', N'Zvornik', NULL, 22, 2)
+GO
+INSERT [dbo].[lkp_municipality] ([id], [last_updated], [_key], [name], [canton], [country], [entity]) VALUES (367, CAST(N'2020-06-22T16:08:50.8380000' AS DateTime2), N'Bosanski Novi', N'Bosanski Novi', NULL, 22, 2)
+GO
+SET IDENTITY_INSERT [dbo].[lkp_municipality] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_nationality] ON 
+GO
+INSERT [dbo].[lkp_nationality] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T16:11:35.8060000' AS DateTime2), N'bosniak', N'Bošnjak')
+GO
+INSERT [dbo].[lkp_nationality] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T16:11:36.4900000' AS DateTime2), N'serb', N'Srbin')
+GO
+INSERT [dbo].[lkp_nationality] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-22T16:11:37.0790000' AS DateTime2), N'croat', N'Hrvat')
+GO
+INSERT [dbo].[lkp_nationality] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-22T16:11:37.7670000' AS DateTime2), N'rom', N'Rom')
+GO
+INSERT [dbo].[lkp_nationality] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-22T16:11:38.3670000' AS DateTime2), N'other', N'Ostalo')
+GO
+INSERT [dbo].[lkp_nationality] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-22T16:11:38.9380000' AS DateTime2), N'unknown', N'Nepoznato')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_nationality] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_recognition] ON 
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (1, CAST(N'2020-06-21T00:43:37.7040000' AS DateTime2), N'prvi let', N'Prvi let', 2, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (2, CAST(N'2020-06-21T00:43:39.0420000' AS DateTime2), N'drugi let', N'Drugi let', 2, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (3, CAST(N'2020-06-21T00:43:39.6860000' AS DateTime2), N'treci let', N'Treći let', 2, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (4, CAST(N'2020-06-21T00:43:40.3090000' AS DateTime2), N'prva zvijezda', N'Prva zvijezda', 3, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (5, CAST(N'2020-06-21T00:43:41.2210000' AS DateTime2), N'druga zvijezda', N'Druga zvijezda', 3, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (6, CAST(N'2020-06-21T00:43:41.9150000' AS DateTime2), N'treca zvijezda', N'Treća zvijezda', 3, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (7, CAST(N'2020-06-21T00:43:42.5180000' AS DateTime2), N'prvi krin', N'Prvi krin', 4, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (8, CAST(N'2020-06-21T00:43:43.0760000' AS DateTime2), N'drugi krin', N'Drugi krin', 4, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (9, CAST(N'2020-06-21T00:43:43.7180000' AS DateTime2), N'treci krin', N'Treći krin', 4, 4, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (10, CAST(N'2020-06-22T17:06:29.8300000' AS DateTime2), N'izvidjac vitez', N'Izviđač vitez', NULL, 1, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (11, CAST(N'2020-06-22T17:49:20.2520000' AS DateTime2), N'zasluzni clan', N'Zaslužni član', NULL, 2, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (12, CAST(N'2020-06-22T17:49:21.0820000' AS DateTime2), N'plaketa', N'Plaketa', NULL, 2, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (13, CAST(N'2020-06-22T17:50:06.4480000' AS DateTime2), N'jubilarni znak 20 godina', N'Jubilarni izviđački znak sa vijencem za 20 godina rada', NULL, 2, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (14, CAST(N'2020-06-22T17:50:07.2660000' AS DateTime2), N'jubilarni znak 30 godina', N'Jubilarni izviđački znak sa vijencem za 20 godina rada', NULL, 2, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (15, CAST(N'2020-06-22T17:50:07.9100000' AS DateTime2), N'jubilarni znak 40 godina', N'Jubilarni izviđački znak sa vijencem za 40 godina rada', NULL, 2, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (16, CAST(N'2020-06-22T17:50:08.4890000' AS DateTime2), N'jubilarni znak 50 godina', N'Jubilarni izviđački znak sa vijencem za 50 godina rada', NULL, 2, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (17, CAST(N'2020-06-22T17:50:09.1100000' AS DateTime2), N'srebreni javorov list sa zracima', N'Srebreni javorov list sa zracima', NULL, 3, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (18, CAST(N'2020-06-22T17:50:09.7130000' AS DateTime2), N'zlatni javorov list sa zracima', N'Zlatni javorov list sa zracima', NULL, 3, 1)
+GO
+INSERT [dbo].[lkp_recognition] ([id], [last_updated], [_key], [name], [category_id], [lkp_recognition_type], [personal]) VALUES (19, CAST(N'2020-06-22T17:57:57.9570000' AS DateTime2), N'viteski odred', N'Viteški odred', NULL, 1, 0)
+GO
+SET IDENTITY_INSERT [dbo].[lkp_recognition] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_recognition_type] ON 
+GO
+INSERT [dbo].[lkp_recognition_type] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T16:50:45.1610000' AS DateTime2), N'zvanje', N'zvanje')
+GO
+INSERT [dbo].[lkp_recognition_type] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T16:50:45.9320000' AS DateTime2), N'priznanje', N'priznanje')
+GO
+INSERT [dbo].[lkp_recognition_type] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-22T16:50:46.6210000' AS DateTime2), N'odlikovanje', N'odlikovanje')
+GO
+INSERT [dbo].[lkp_recognition_type] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-22T17:44:51.4970000' AS DateTime2), N'programska oblast', N'programska oblast')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_recognition_type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_school_type] ON 
+GO
+INSERT [dbo].[lkp_school_type] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-21T00:54:32.5570000' AS DateTime2), N'first degree', N'IKŠ I stepena')
+GO
+INSERT [dbo].[lkp_school_type] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-21T00:54:33.7830000' AS DateTime2), N'second degree', N'IKŠ II stepena')
+GO
+INSERT [dbo].[lkp_school_type] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-21T00:54:34.5810000' AS DateTime2), N'third degree', N'IKŠ III stepena')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_school_type] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_scout_association] ON 
+GO
+INSERT [dbo].[lkp_scout_association] ([id], [last_updated], [_key], [name], [translation]) VALUES (1, CAST(N'2020-06-21T00:55:32.8300000' AS DateTime2), N'SIFBIH', N'Savez izviđača Federacije Bosne i Hercegovine', N'Scout Association of Federation Bosnia and Herzegovina')
+GO
+INSERT [dbo].[lkp_scout_association] ([id], [last_updated], [_key], [name], [translation]) VALUES (2, CAST(N'2020-06-21T00:55:33.8190000' AS DateTime2), N'SIRS', N'Savez izviđača Republike Srpske', N'Scout Association of Republic of Srpska')
+GO
+INSERT [dbo].[lkp_scout_association] ([id], [last_updated], [_key], [name], [translation]) VALUES (3, CAST(N'2020-06-21T00:55:34.4580000' AS DateTime2), N'IBD', N'Izviđači Brčko Distrikta', N'Scouts of Brčko District')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_scout_association] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_scout_group] ON 
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T18:02:13.5270000' AS DateTime2), N'Baretnjak', N'Baretnjak')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T18:02:14.2700000' AS DateTime2), N'Bregava', N'Bregava')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-22T18:02:14.8120000' AS DateTime2), N'Crni Vrh', N'Crni Vrh')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (4, CAST(N'2020-06-22T18:02:15.9520000' AS DateTime2), N'Duga', N'Duga')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-22T18:02:16.4800000' AS DateTime2), N'Igman 92', N'Igman 92')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-22T18:02:17.0130000' AS DateTime2), N'Jablan', N'Jablan')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (7, CAST(N'2020-06-22T18:02:17.5330000' AS DateTime2), N'Lisac', N'Lisac')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (8, CAST(N'2020-06-22T18:02:18.2350000' AS DateTime2), N'Lukavica', N'Lukavica')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (9, CAST(N'2020-06-22T18:02:18.7730000' AS DateTime2), N'Plamen', N'Plamen')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (10, CAST(N'2020-06-22T18:02:19.4300000' AS DateTime2), N'Prva Bošnjačka Gimnazija', N'Prva Bošnjačka Gimnazija')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (11, CAST(N'2020-06-22T18:02:20.0280000' AS DateTime2), N'Prvi Dobrinjski', N'Prvi Dobrinjski')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (12, CAST(N'2020-06-22T18:02:20.6320000' AS DateTime2), N'Rakovica 9', N'Rakovica 9')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (13, CAST(N'2020-06-22T18:02:21.3280000' AS DateTime2), N'Smet', N'Smet')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (14, CAST(N'2020-06-22T18:02:21.8290000' AS DateTime2), N'Visoko', N'Visoko')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (15, CAST(N'2020-06-22T18:02:22.4170000' AS DateTime2), N'Vrba', N'Vrba')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (16, CAST(N'2020-06-22T18:02:23.0230000' AS DateTime2), N'Zmajevac', N'Zmajevac')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (17, CAST(N'2020-06-22T18:02:23.7950000' AS DateTime2), N'Zvijezda', N'Zvijezda')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (18, CAST(N'2020-06-22T18:02:24.4570000' AS DateTime2), N'Stari Grad', N'Stari Grad')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (19, CAST(N'2020-06-22T18:02:25.0200000' AS DateTime2), N'Bosnian MS', N'Bosnian MS')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (20, CAST(N'2020-06-22T18:02:26.2850000' AS DateTime2), N'Sebilj', N'Sebilj')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (21, CAST(N'2020-06-22T18:02:27.2990000' AS DateTime2), N'Vrelo Bosne', N'Vrelo Bosne')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (22, CAST(N'2020-06-22T18:02:27.8400000' AS DateTime2), N'Zenički', N'Zenički')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (23, CAST(N'2020-06-22T18:02:28.3800000' AS DateTime2), N'Klek', N'Klek')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (24, CAST(N'2020-06-22T18:02:28.9580000' AS DateTime2), N'Krin', N'Krin')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (25, CAST(N'2020-06-22T18:02:29.6210000' AS DateTime2), N'Neretva', N'Neretva')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (26, CAST(N'2020-06-22T18:02:30.1730000' AS DateTime2), N'Neretva', N'Neretva')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (27, CAST(N'2020-06-22T18:02:31.5150000' AS DateTime2), N'Radobolja', N'Radobolja')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (28, CAST(N'2020-06-22T18:02:32.1120000' AS DateTime2), N'Safet Ribić', N'Safet Ribić')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (29, CAST(N'2020-06-22T18:02:32.7290000' AS DateTime2), N'Široki Brijeg', N'Široki Brijeg')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (30, CAST(N'2020-06-22T18:02:33.4140000' AS DateTime2), N'Croa', N'Croa')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (31, CAST(N'2020-06-22T18:17:00.2390000' AS DateTime2), N'5 zlatnih ljiljana', N'5 zlatnih ljiljana')
+GO
+INSERT [dbo].[lkp_scout_group] ([id], [last_updated], [_key], [name]) VALUES (32, CAST(N'2020-06-22T18:17:01.2250000' AS DateTime2), N'Mladost', N'Mladost')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_scout_group] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_unit] ON 
+GO
+INSERT [dbo].[lkp_unit] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-21T00:45:52.3970000' AS DateTime2), N'pack_m', N'jato')
+GO
+INSERT [dbo].[lkp_unit] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-21T00:45:54.2510000' AS DateTime2), N'patrol_m', N'vod')
+GO
+INSERT [dbo].[lkp_unit] ([id], [last_updated], [_key], [name]) VALUES (5, CAST(N'2020-06-21T00:45:55.5190000' AS DateTime2), N'den', N'četa')
+GO
+INSERT [dbo].[lkp_unit] ([id], [last_updated], [_key], [name]) VALUES (6, CAST(N'2020-06-21T00:46:27.7600000' AS DateTime2), N'group', N'odred')
+GO
+INSERT [dbo].[lkp_unit] ([id], [last_updated], [_key], [name]) VALUES (7, CAST(N'2020-06-21T00:50:23.3420000' AS DateTime2), N'club', N'klub')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_unit] OFF
+GO
+SET IDENTITY_INSERT [dbo].[lkp_user_type] ON 
+GO
+INSERT [dbo].[lkp_user_type] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-22T20:18:30.2390000' AS DateTime2), N'administrator', N'Administrator')
+GO
+INSERT [dbo].[lkp_user_type] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-22T20:18:30.9250000' AS DateTime2), N'secretary', N'Sekretar')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_user_type] OFF
+GO
+INSERT [dbo].[lkp_user_type_security_role] ([security_role], [lkp_user_type]) VALUES (1, 1)
+GO
+INSERT [dbo].[lkp_user_type_security_role] ([security_role], [lkp_user_type]) VALUES (2, 2)
+GO
+SET IDENTITY_INSERT [dbo].[lkp_woodbadge] ON 
+GO
+INSERT [dbo].[lkp_woodbadge] ([id], [last_updated], [_key], [name]) VALUES (1, CAST(N'2020-06-21T00:58:06.0360000' AS DateTime2), N'woodbadge first degree', N'Instruktorski I stepena')
+GO
+INSERT [dbo].[lkp_woodbadge] ([id], [last_updated], [_key], [name]) VALUES (2, CAST(N'2020-06-21T00:58:06.9230000' AS DateTime2), N'woodbadge second degree', N'Instruktorski II stepena')
+GO
+INSERT [dbo].[lkp_woodbadge] ([id], [last_updated], [_key], [name]) VALUES (3, CAST(N'2020-06-21T00:58:07.6870000' AS DateTime2), N'woodbadge third degree', N'Instruktorski III stepena')
+GO
+SET IDENTITY_INSERT [dbo].[lkp_woodbadge] OFF
+GO
+SET IDENTITY_INSERT [dbo].[member] ON 
+GO
+INSERT [dbo].[member] ([id], [last_updated], [id_card_number], [record_number], [person_id]) VALUES (1, CAST(N'2020-07-07T10:44:51.4770000' AS DateTime2), 1069, NULL, 1)
+GO
+SET IDENTITY_INSERT [dbo].[member] OFF
+GO
+SET IDENTITY_INSERT [dbo].[member_category] ON 
+GO
+INSERT [dbo].[member_category] ([id], [last_updated], [joined], [category_id], [member_id], [made_a_promise], [place], [active]) VALUES (1, CAST(N'2020-07-07T11:02:38.9260000' AS DateTime2), CAST(N'2013-02-02T11:03:13.6530000' AS DateTime2), 5, 1, NULL, NULL, 1)
+GO
+SET IDENTITY_INSERT [dbo].[member_category] OFF
+GO
+SET IDENTITY_INSERT [dbo].[member_scout_group] ON 
+GO
+INSERT [dbo].[member_scout_group] ([id], [last_updated], [member_since], [scout_group_id], [member_id]) VALUES (1, CAST(N'2020-07-07T10:45:44.3990000' AS DateTime2), CAST(N'2008-07-01T10:46:12.6060000' AS DateTime2), 5, 1)
+GO
+SET IDENTITY_INSERT [dbo].[member_scout_group] OFF
+GO
+SET IDENTITY_INSERT [dbo].[member_unit] ON 
+GO
+INSERT [dbo].[member_unit] ([id], [last_updated], [joined_unit], [left_unit], [member_id], [unit_id]) VALUES (1, CAST(N'2020-07-07T11:00:33.6400000' AS DateTime2), CAST(N'2013-02-02T11:00:37.2730000' AS DateTime2), NULL, 1, 1)
+GO
+SET IDENTITY_INSERT [dbo].[member_unit] OFF
+GO
+SET IDENTITY_INSERT [dbo].[parent] ON 
+GO
+INSERT [dbo].[parent] ([id], [last_updated], [first_name], [last_name], [gender]) VALUES (1, CAST(N'2020-07-07T10:31:22.6830000' AS DateTime2), N'Dževad', N'Ahmetbegović', 2)
+GO
+INSERT [dbo].[parent] ([id], [last_updated], [first_name], [last_name], [gender]) VALUES (2, CAST(N'2020-07-07T10:31:41.9990000' AS DateTime2), N'Dinka', N'Ahmetbegović', 1)
+GO
+SET IDENTITY_INSERT [dbo].[parent] OFF
+GO
+SET IDENTITY_INSERT [dbo].[person] ON 
+GO
+INSERT [dbo].[person] ([id], [last_updated], [first_name], [last_name], [date_of_birth], [jmbg], [gender], [father], [mother], [nationality], [place_of_birth], [residence], [blood_type]) VALUES (1, CAST(N'2020-07-07T10:30:19.0110000' AS DateTime2), N'Ena', N'Ahmetbegović', CAST(N'1995-12-28T10:30:35.3250000' AS DateTime2), N'2812995195005', 1, 1, 2, 1, 6, 1, 1)
+GO
+SET IDENTITY_INSERT [dbo].[person] OFF
+GO
+SET IDENTITY_INSERT [dbo].[place] ON 
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (1, CAST(N'2020-07-07T10:10:23.2480000' AS DateTime2), N'Topčić polje', 4, 5, 1, 257)
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (2, CAST(N'2020-07-07T10:14:30.2320000' AS DateTime2), N'Stolac', 7, 5, 1, 284)
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (3, CAST(N'2020-07-07T10:16:37.8610000' AS DateTime2), N'Tešanj', 4, 5, 1, 253)
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (4, CAST(N'2020-07-07T10:24:12.9510000' AS DateTime2), N'Ljubače', 3, 5, 1, 244)
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (5, CAST(N'2020-07-07T10:26:19.0760000' AS DateTime2), N'Hrasnica', 9, 5, 1, 292)
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (6, CAST(N'2020-07-07T10:32:28.5900000' AS DateTime2), N'Zenica', 4, 5, 1, 257)
+GO
+INSERT [dbo].[place] ([id], [last_updated], [name], [canton], [country], [entity], [municipality]) VALUES (7, CAST(N'2020-07-07T10:43:16.1380000' AS DateTime2), N'Dobrinja', 9, 5, 1, 295)
+GO
+SET IDENTITY_INSERT [dbo].[place] OFF
+GO
+SET IDENTITY_INSERT [dbo].[residence] ON 
+GO
+INSERT [dbo].[residence] ([id], [last_updated], [street], [place]) VALUES (1, CAST(N'2020-07-07T10:33:05.9840000' AS DateTime2), N'Grada Bakua 10', 7)
+GO
+SET IDENTITY_INSERT [dbo].[residence] OFF
+GO
+SET IDENTITY_INSERT [dbo].[scout_group] ON 
+GO
+INSERT [dbo].[scout_group] ([id], [last_updated], [address], [founded], [activity_status_id], [place_id], [scout_association_id], [scout_group_id]) VALUES (1, CAST(N'2020-07-07T10:08:39.8480000' AS DateTime2), NULL, NULL, 1, 1, 1, 1)
+GO
+INSERT [dbo].[scout_group] ([id], [last_updated], [address], [founded], [activity_status_id], [place_id], [scout_association_id], [scout_group_id]) VALUES (2, CAST(N'2020-07-07T10:14:16.3210000' AS DateTime2), NULL, NULL, 1, 2, 1, 2)
+GO
+INSERT [dbo].[scout_group] ([id], [last_updated], [address], [founded], [activity_status_id], [place_id], [scout_association_id], [scout_group_id]) VALUES (3, CAST(N'2020-07-07T10:16:08.6550000' AS DateTime2), NULL, NULL, 1, 3, 1, 3)
+GO
+INSERT [dbo].[scout_group] ([id], [last_updated], [address], [founded], [activity_status_id], [place_id], [scout_association_id], [scout_group_id]) VALUES (4, CAST(N'2020-07-07T10:22:56.8870000' AS DateTime2), NULL, NULL, 1, 4, 1, 4)
+GO
+INSERT [dbo].[scout_group] ([id], [last_updated], [address], [founded], [activity_status_id], [place_id], [scout_association_id], [scout_group_id]) VALUES (5, CAST(N'2020-07-07T10:25:22.8550000' AS DateTime2), N'Trg Branilaca Hrasnice bb', CAST(N'1958-11-02T10:25:36.7160000' AS DateTime2), 1, 5, 1, 5)
+GO
+SET IDENTITY_INSERT [dbo].[scout_group] OFF
+GO
+SET IDENTITY_INSERT [dbo].[security_role] ON 
+GO
+INSERT [dbo].[security_role] ([id], [last_updated], [name]) VALUES (1, CAST(N'2020-06-22T20:20:31.8880000' AS DateTime2), N'ROLE_ADMIN')
+GO
+INSERT [dbo].[security_role] ([id], [last_updated], [name]) VALUES (2, CAST(N'2020-06-22T20:20:32.5700000' AS DateTime2), N'ROLE_SECRETARY')
+GO
+SET IDENTITY_INSERT [dbo].[security_role] OFF
+GO
+SET IDENTITY_INSERT [dbo].[security_user] ON 
+GO
+INSERT [dbo].[security_user] ([id], [last_updated], [username]) VALUES (1, CAST(N'2020-06-22T20:21:49.1940000' AS DateTime2), N'eahmetbegovic')
+GO
+SET IDENTITY_INSERT [dbo].[security_user] OFF
+GO
+SET IDENTITY_INSERT [dbo].[unit] ON 
+GO
+INSERT [dbo].[unit] ([id], [last_updated], [founded], [unit_name], [leader_id], [scout_group_id], [unit_id]) VALUES (1, CAST(N'2020-07-07T11:00:58.5390000' AS DateTime2), NULL, N'Grizzly', NULL, 5, 7)
+GO
+SET IDENTITY_INSERT [dbo].[unit] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UKgn73budjn00m32ap0y6m33ktk]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_canton] ADD  CONSTRAINT [UKgn73budjn00m32ap0y6m33ktk] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UKf32qnd1ph2o2ojxqrv3od51fy]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_contact_type] ADD  CONSTRAINT [UKf32qnd1ph2o2ojxqrv3od51fy] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UK3t4iy1vi63mukr2axan4d96ph]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_country] ADD  CONSTRAINT [UK3t4iy1vi63mukr2axan4d96ph] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UK1j67hf3necu5ib8uv9gni1c41]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_entity] ADD  CONSTRAINT [UK1j67hf3necu5ib8uv9gni1c41] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UKcs2651nk5jny50ar2he831lba]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_gender] ADD  CONSTRAINT [UKcs2651nk5jny50ar2he831lba] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UK3hmidjkl2l2a6qnuftpkynv4f]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_municipality] ADD  CONSTRAINT [UK3hmidjkl2l2a6qnuftpkynv4f] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UKs571ksjeuwhy94yh8hynl0pms]    Script Date: 12.7.2020 23:48:55 ******/
+ALTER TABLE [dbo].[lkp_nationality] ADD  CONSTRAINT [UKs571ksjeuwhy94yh8hynl0pms] UNIQUE NONCLUSTERED 
+(
+	[_key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[activity]  WITH CHECK ADD  CONSTRAINT [FKf1qr1yb6mticotvrn5ugfel60] FOREIGN KEY([head_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[activity] CHECK CONSTRAINT [FKf1qr1yb6mticotvrn5ugfel60]
+GO
+ALTER TABLE [dbo].[activity]  WITH CHECK ADD  CONSTRAINT [FKlag7o63us9hu15to0n0dkdmh8] FOREIGN KEY([activity_type_id])
+REFERENCES [dbo].[lkp_activity_type] ([id])
+GO
+ALTER TABLE [dbo].[activity] CHECK CONSTRAINT [FKlag7o63us9hu15to0n0dkdmh8]
+GO
+ALTER TABLE [dbo].[activity]  WITH CHECK ADD  CONSTRAINT [FKsirekglua1otlac3kvwavn7s3] FOREIGN KEY([chief_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[activity] CHECK CONSTRAINT [FKsirekglua1otlac3kvwavn7s3]
+GO
+ALTER TABLE [dbo].[group_membership]  WITH CHECK ADD  CONSTRAINT [FKochih5gj09ef2tfpq4d6h976d] FOREIGN KEY([association_membership_id])
+REFERENCES [dbo].[membership] ([id])
+GO
+ALTER TABLE [dbo].[group_membership] CHECK CONSTRAINT [FKochih5gj09ef2tfpq4d6h976d]
+GO
+ALTER TABLE [dbo].[group_membership]  WITH CHECK ADD  CONSTRAINT [FKqqr8lfjrqd4figya6ep3byejj] FOREIGN KEY([year_id])
+REFERENCES [dbo].[lkp_year] ([id])
+GO
+ALTER TABLE [dbo].[group_membership] CHECK CONSTRAINT [FKqqr8lfjrqd4figya6ep3byejj]
+GO
+ALTER TABLE [dbo].[lkp_category]  WITH CHECK ADD  CONSTRAINT [FKhkw068576kqad3qi5sbwjdl5s] FOREIGN KEY([unit_id])
+REFERENCES [dbo].[lkp_unit] ([id])
+GO
+ALTER TABLE [dbo].[lkp_category] CHECK CONSTRAINT [FKhkw068576kqad3qi5sbwjdl5s]
+GO
+ALTER TABLE [dbo].[lkp_merit_badge]  WITH CHECK ADD  CONSTRAINT [FKstlb9pe7peiomuo0toyh5uo68] FOREIGN KEY([category_id])
+REFERENCES [dbo].[lkp_category] ([id])
+GO
+ALTER TABLE [dbo].[lkp_merit_badge] CHECK CONSTRAINT [FKstlb9pe7peiomuo0toyh5uo68]
+GO
+ALTER TABLE [dbo].[lkp_municipality]  WITH CHECK ADD  CONSTRAINT [FK3fg0jnh23l0aahliftgf6a8i8] FOREIGN KEY([entity])
+REFERENCES [dbo].[lkp_entity] ([id])
+GO
+ALTER TABLE [dbo].[lkp_municipality] CHECK CONSTRAINT [FK3fg0jnh23l0aahliftgf6a8i8]
+GO
+ALTER TABLE [dbo].[lkp_municipality]  WITH CHECK ADD  CONSTRAINT [FK5wa3rjl6v75wts1xctnr54kli] FOREIGN KEY([country])
+REFERENCES [dbo].[lkp_country] ([id])
+GO
+ALTER TABLE [dbo].[lkp_municipality] CHECK CONSTRAINT [FK5wa3rjl6v75wts1xctnr54kli]
+GO
+ALTER TABLE [dbo].[lkp_municipality]  WITH CHECK ADD  CONSTRAINT [FK70bi9qlcmvbs3n043ubpwno47] FOREIGN KEY([canton])
+REFERENCES [dbo].[lkp_canton] ([id])
+GO
+ALTER TABLE [dbo].[lkp_municipality] CHECK CONSTRAINT [FK70bi9qlcmvbs3n043ubpwno47]
+GO
+ALTER TABLE [dbo].[lkp_recognition]  WITH CHECK ADD  CONSTRAINT [FKeunj3403x1xxld4ji59hs3963] FOREIGN KEY([category_id])
+REFERENCES [dbo].[lkp_category] ([id])
+GO
+ALTER TABLE [dbo].[lkp_recognition] CHECK CONSTRAINT [FKeunj3403x1xxld4ji59hs3963]
+GO
+ALTER TABLE [dbo].[lkp_recognition]  WITH CHECK ADD  CONSTRAINT [FKkec668xgdovahs2oghalbgv99] FOREIGN KEY([lkp_recognition_type])
+REFERENCES [dbo].[lkp_recognition_type] ([id])
+GO
+ALTER TABLE [dbo].[lkp_recognition] CHECK CONSTRAINT [FKkec668xgdovahs2oghalbgv99]
+GO
+ALTER TABLE [dbo].[lkp_user_type_security_role]  WITH CHECK ADD  CONSTRAINT [FK9kuumhd838vkpick1euop0ruw] FOREIGN KEY([lkp_user_type])
+REFERENCES [dbo].[lkp_user_type] ([id])
+GO
+ALTER TABLE [dbo].[lkp_user_type_security_role] CHECK CONSTRAINT [FK9kuumhd838vkpick1euop0ruw]
+GO
+ALTER TABLE [dbo].[lkp_user_type_security_role]  WITH CHECK ADD  CONSTRAINT [FKpquvyrk2we8lc35wbhi0wi4jp] FOREIGN KEY([security_role])
+REFERENCES [dbo].[security_role] ([id])
+GO
+ALTER TABLE [dbo].[lkp_user_type_security_role] CHECK CONSTRAINT [FKpquvyrk2we8lc35wbhi0wi4jp]
+GO
+ALTER TABLE [dbo].[member]  WITH CHECK ADD  CONSTRAINT [FKi0rnferjm0s0i8odpcjnyof2d] FOREIGN KEY([person_id])
+REFERENCES [dbo].[person] ([id])
+GO
+ALTER TABLE [dbo].[member] CHECK CONSTRAINT [FKi0rnferjm0s0i8odpcjnyof2d]
+GO
+ALTER TABLE [dbo].[member_activity]  WITH CHECK ADD  CONSTRAINT [FKg3729t0syho63ik89dhci72ft] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_activity] CHECK CONSTRAINT [FKg3729t0syho63ik89dhci72ft]
+GO
+ALTER TABLE [dbo].[member_activity]  WITH CHECK ADD  CONSTRAINT [FKskr113c0e28gouy8t7ybqs3a0] FOREIGN KEY([activity_id])
+REFERENCES [dbo].[activity] ([id])
+GO
+ALTER TABLE [dbo].[member_activity] CHECK CONSTRAINT [FKskr113c0e28gouy8t7ybqs3a0]
+GO
+ALTER TABLE [dbo].[member_category]  WITH CHECK ADD  CONSTRAINT [FKile5j8jr25uu0kg7btnjg27ha] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_category] CHECK CONSTRAINT [FKile5j8jr25uu0kg7btnjg27ha]
+GO
+ALTER TABLE [dbo].[member_category]  WITH CHECK ADD  CONSTRAINT [FKmmsommkk33xp0lh91o1nx5yxh] FOREIGN KEY([category_id])
+REFERENCES [dbo].[lkp_category] ([id])
+GO
+ALTER TABLE [dbo].[member_category] CHECK CONSTRAINT [FKmmsommkk33xp0lh91o1nx5yxh]
+GO
+ALTER TABLE [dbo].[member_duty]  WITH CHECK ADD  CONSTRAINT [FK3hpkjijids6aeuvllyb84xdf] FOREIGN KEY([duty_id])
+REFERENCES [dbo].[lkp_duty] ([id])
+GO
+ALTER TABLE [dbo].[member_duty] CHECK CONSTRAINT [FK3hpkjijids6aeuvllyb84xdf]
+GO
+ALTER TABLE [dbo].[member_duty]  WITH CHECK ADD  CONSTRAINT [FK6fwcg9e573urs6mngpjxt3kpo] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_duty] CHECK CONSTRAINT [FK6fwcg9e573urs6mngpjxt3kpo]
+GO
+ALTER TABLE [dbo].[member_duty]  WITH CHECK ADD  CONSTRAINT [FKoqrcj1fylc2qhjm4cdgp8iegb] FOREIGN KEY([unit_id])
+REFERENCES [dbo].[lkp_unit] ([id])
+GO
+ALTER TABLE [dbo].[member_duty] CHECK CONSTRAINT [FKoqrcj1fylc2qhjm4cdgp8iegb]
+GO
+ALTER TABLE [dbo].[member_group_membership]  WITH CHECK ADD  CONSTRAINT [FKc10v0100mb40skn2acoipiqtt] FOREIGN KEY([group_membership_id])
+REFERENCES [dbo].[group_membership] ([id])
+GO
+ALTER TABLE [dbo].[member_group_membership] CHECK CONSTRAINT [FKc10v0100mb40skn2acoipiqtt]
+GO
+ALTER TABLE [dbo].[member_group_membership]  WITH CHECK ADD  CONSTRAINT [FKsj1ui0kfp8vhdebiw72eolp16] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_group_membership] CHECK CONSTRAINT [FKsj1ui0kfp8vhdebiw72eolp16]
+GO
+ALTER TABLE [dbo].[member_merit_badge]  WITH CHECK ADD  CONSTRAINT [FK9gomq0okmxnc5wf6g5yjink17] FOREIGN KEY([merit_badge_id])
+REFERENCES [dbo].[lkp_merit_badge] ([id])
+GO
+ALTER TABLE [dbo].[member_merit_badge] CHECK CONSTRAINT [FK9gomq0okmxnc5wf6g5yjink17]
+GO
+ALTER TABLE [dbo].[member_merit_badge]  WITH CHECK ADD  CONSTRAINT [FKiix16c1iudq7dk58l6tmxhnc2] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_merit_badge] CHECK CONSTRAINT [FKiix16c1iudq7dk58l6tmxhnc2]
+GO
+ALTER TABLE [dbo].[member_recognition]  WITH CHECK ADD  CONSTRAINT [FKbgmft8ffoiurpivmejouxe84l] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_recognition] CHECK CONSTRAINT [FKbgmft8ffoiurpivmejouxe84l]
+GO
+ALTER TABLE [dbo].[member_recognition]  WITH CHECK ADD  CONSTRAINT [FKgbuy6fc2g4ww8hyyq9r67ix1t] FOREIGN KEY([recognition_id])
+REFERENCES [dbo].[lkp_recognition] ([id])
+GO
+ALTER TABLE [dbo].[member_recognition] CHECK CONSTRAINT [FKgbuy6fc2g4ww8hyyq9r67ix1t]
+GO
+ALTER TABLE [dbo].[member_school]  WITH CHECK ADD  CONSTRAINT [FKjub0rdrsmo4lv4kyyr9swps7j] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_school] CHECK CONSTRAINT [FKjub0rdrsmo4lv4kyyr9swps7j]
+GO
+ALTER TABLE [dbo].[member_school]  WITH CHECK ADD  CONSTRAINT [FKkbxmy18i60ohr4iep85imtt2c] FOREIGN KEY([school_id])
+REFERENCES [dbo].[school] ([id])
+GO
+ALTER TABLE [dbo].[member_school] CHECK CONSTRAINT [FKkbxmy18i60ohr4iep85imtt2c]
+GO
+ALTER TABLE [dbo].[member_scout_group]  WITH CHECK ADD  CONSTRAINT [FK44l3mfgv0348t1s0pgw5a2dht] FOREIGN KEY([scout_group_id])
+REFERENCES [dbo].[scout_group] ([id])
+GO
+ALTER TABLE [dbo].[member_scout_group] CHECK CONSTRAINT [FK44l3mfgv0348t1s0pgw5a2dht]
+GO
+ALTER TABLE [dbo].[member_scout_group]  WITH CHECK ADD  CONSTRAINT [FKmqyq9pqx0vitigl63a1a7alc4] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_scout_group] CHECK CONSTRAINT [FKmqyq9pqx0vitigl63a1a7alc4]
+GO
+ALTER TABLE [dbo].[member_unit]  WITH CHECK ADD  CONSTRAINT [FK3wum0hys051h0j2hi4g9xttdb] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_unit] CHECK CONSTRAINT [FK3wum0hys051h0j2hi4g9xttdb]
+GO
+ALTER TABLE [dbo].[member_unit]  WITH CHECK ADD  CONSTRAINT [FK3x5w7q6shblgw9o0nuge0lkrb] FOREIGN KEY([unit_id])
+REFERENCES [dbo].[unit] ([id])
+GO
+ALTER TABLE [dbo].[member_unit] CHECK CONSTRAINT [FK3x5w7q6shblgw9o0nuge0lkrb]
+GO
+ALTER TABLE [dbo].[member_woodbadge]  WITH CHECK ADD  CONSTRAINT [FK4hoe1cfjtqeymmkm5ofbgdcwq] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[member_woodbadge] CHECK CONSTRAINT [FK4hoe1cfjtqeymmkm5ofbgdcwq]
+GO
+ALTER TABLE [dbo].[member_woodbadge]  WITH CHECK ADD  CONSTRAINT [FKd3nlgv3qiankx10jonovwbrj2] FOREIGN KEY([woodbadge_id])
+REFERENCES [dbo].[woodbadge] ([id])
+GO
+ALTER TABLE [dbo].[member_woodbadge] CHECK CONSTRAINT [FKd3nlgv3qiankx10jonovwbrj2]
+GO
+ALTER TABLE [dbo].[membership]  WITH CHECK ADD  CONSTRAINT [FK8tphjj3br9ct0h8r2x15l8yny] FOREIGN KEY([year_id])
+REFERENCES [dbo].[lkp_year] ([id])
+GO
+ALTER TABLE [dbo].[membership] CHECK CONSTRAINT [FK8tphjj3br9ct0h8r2x15l8yny]
+GO
+ALTER TABLE [dbo].[organization_contact]  WITH CHECK ADD  CONSTRAINT [FK7kbk0g9k2vab0llgvhg6v0sxf] FOREIGN KEY([contact_type])
+REFERENCES [dbo].[lkp_contact_type] ([id])
+GO
+ALTER TABLE [dbo].[organization_contact] CHECK CONSTRAINT [FK7kbk0g9k2vab0llgvhg6v0sxf]
+GO
+ALTER TABLE [dbo].[organization_contact]  WITH CHECK ADD  CONSTRAINT [FKe56uvd26xw65i2iiibi70of9c] FOREIGN KEY([scout_group])
+REFERENCES [dbo].[scout_group] ([id])
+GO
+ALTER TABLE [dbo].[organization_contact] CHECK CONSTRAINT [FKe56uvd26xw65i2iiibi70of9c]
+GO
+ALTER TABLE [dbo].[parent]  WITH CHECK ADD  CONSTRAINT [FKeglo8y94dr4ws5twf79jdin76] FOREIGN KEY([gender])
+REFERENCES [dbo].[lkp_gender] ([id])
+GO
+ALTER TABLE [dbo].[parent] CHECK CONSTRAINT [FKeglo8y94dr4ws5twf79jdin76]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FK1lop59byce54sx7sg7eaf7qtg] FOREIGN KEY([father])
+REFERENCES [dbo].[parent] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FK1lop59byce54sx7sg7eaf7qtg]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FKjr7doh2r2frdj9j8rnsxiarnf] FOREIGN KEY([place_of_birth])
+REFERENCES [dbo].[place] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FKjr7doh2r2frdj9j8rnsxiarnf]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FKn9sva62n40subk0yybv5xu65c] FOREIGN KEY([mother])
+REFERENCES [dbo].[parent] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FKn9sva62n40subk0yybv5xu65c]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FKpv56yqvxl6ooapbi12b7trtav] FOREIGN KEY([residence])
+REFERENCES [dbo].[residence] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FKpv56yqvxl6ooapbi12b7trtav]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FKromskx9xxsx864xuf7353fbd9] FOREIGN KEY([gender])
+REFERENCES [dbo].[lkp_gender] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FKromskx9xxsx864xuf7353fbd9]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FKtbm90mbnef60ly6idwsjopxfd] FOREIGN KEY([nationality])
+REFERENCES [dbo].[lkp_nationality] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FKtbm90mbnef60ly6idwsjopxfd]
+GO
+ALTER TABLE [dbo].[person]  WITH CHECK ADD  CONSTRAINT [FKvlwk4009nbbyiovolibna5ri] FOREIGN KEY([blood_type])
+REFERENCES [dbo].[lkp_blood_type] ([id])
+GO
+ALTER TABLE [dbo].[person] CHECK CONSTRAINT [FKvlwk4009nbbyiovolibna5ri]
+GO
+ALTER TABLE [dbo].[person_contact]  WITH CHECK ADD  CONSTRAINT [FK5uon59kder4fbalhyxleltb5v] FOREIGN KEY([person])
+REFERENCES [dbo].[person] ([id])
+GO
+ALTER TABLE [dbo].[person_contact] CHECK CONSTRAINT [FK5uon59kder4fbalhyxleltb5v]
+GO
+ALTER TABLE [dbo].[person_contact]  WITH CHECK ADD  CONSTRAINT [FKskr1ypkiwl8psdl579yr8j24i] FOREIGN KEY([contact_type])
+REFERENCES [dbo].[lkp_contact_type] ([id])
+GO
+ALTER TABLE [dbo].[person_contact] CHECK CONSTRAINT [FKskr1ypkiwl8psdl579yr8j24i]
+GO
+ALTER TABLE [dbo].[place]  WITH CHECK ADD  CONSTRAINT [FKl26fvdrwoij0tdece01vq1cc4] FOREIGN KEY([country])
+REFERENCES [dbo].[lkp_country] ([id])
+GO
+ALTER TABLE [dbo].[place] CHECK CONSTRAINT [FKl26fvdrwoij0tdece01vq1cc4]
+GO
+ALTER TABLE [dbo].[place]  WITH CHECK ADD  CONSTRAINT [FKnjrte1vltq12l0r71t1lyo5dg] FOREIGN KEY([municipality])
+REFERENCES [dbo].[lkp_municipality] ([id])
+GO
+ALTER TABLE [dbo].[place] CHECK CONSTRAINT [FKnjrte1vltq12l0r71t1lyo5dg]
+GO
+ALTER TABLE [dbo].[place]  WITH CHECK ADD  CONSTRAINT [FKr35r2qflh5nmif4lq7f3o64mt] FOREIGN KEY([canton])
+REFERENCES [dbo].[lkp_canton] ([id])
+GO
+ALTER TABLE [dbo].[place] CHECK CONSTRAINT [FKr35r2qflh5nmif4lq7f3o64mt]
+GO
+ALTER TABLE [dbo].[place]  WITH CHECK ADD  CONSTRAINT [FKri1dy88fakv1w1dqka7krvh55] FOREIGN KEY([entity])
+REFERENCES [dbo].[lkp_entity] ([id])
+GO
+ALTER TABLE [dbo].[place] CHECK CONSTRAINT [FKri1dy88fakv1w1dqka7krvh55]
+GO
+ALTER TABLE [dbo].[residence]  WITH CHECK ADD  CONSTRAINT [FK7nmoeisfimbt4q8huylc1xus5] FOREIGN KEY([place])
+REFERENCES [dbo].[place] ([id])
+GO
+ALTER TABLE [dbo].[residence] CHECK CONSTRAINT [FK7nmoeisfimbt4q8huylc1xus5]
+GO
+ALTER TABLE [dbo].[school]  WITH CHECK ADD  CONSTRAINT [FKf88akli17nwy34laxfoy37p09] FOREIGN KEY([school_type_id])
+REFERENCES [dbo].[lkp_school_type] ([id])
+GO
+ALTER TABLE [dbo].[school] CHECK CONSTRAINT [FKf88akli17nwy34laxfoy37p09]
+GO
+ALTER TABLE [dbo].[school]  WITH CHECK ADD  CONSTRAINT [FKkgmiik2aimth0krwydn8kl3w0] FOREIGN KEY([head_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[school] CHECK CONSTRAINT [FKkgmiik2aimth0krwydn8kl3w0]
+GO
+ALTER TABLE [dbo].[school]  WITH CHECK ADD  CONSTRAINT [FKqkmdakiexqyh5kl9ot6s3wmp9] FOREIGN KEY([chief_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[school] CHECK CONSTRAINT [FKqkmdakiexqyh5kl9ot6s3wmp9]
+GO
+ALTER TABLE [dbo].[scout_group]  WITH CHECK ADD  CONSTRAINT [FK5j4t8htfkp9q6y2ga0iqsedsi] FOREIGN KEY([place_id])
+REFERENCES [dbo].[place] ([id])
+GO
+ALTER TABLE [dbo].[scout_group] CHECK CONSTRAINT [FK5j4t8htfkp9q6y2ga0iqsedsi]
+GO
+ALTER TABLE [dbo].[scout_group]  WITH CHECK ADD  CONSTRAINT [FKal108jdomfewdp70h8h97t17e] FOREIGN KEY([scout_association_id])
+REFERENCES [dbo].[lkp_scout_association] ([id])
+GO
+ALTER TABLE [dbo].[scout_group] CHECK CONSTRAINT [FKal108jdomfewdp70h8h97t17e]
+GO
+ALTER TABLE [dbo].[scout_group]  WITH CHECK ADD  CONSTRAINT [FKfcjk79dxaj5d8gothcmwwri94] FOREIGN KEY([activity_status_id])
+REFERENCES [dbo].[lkp_activity_status] ([id])
+GO
+ALTER TABLE [dbo].[scout_group] CHECK CONSTRAINT [FKfcjk79dxaj5d8gothcmwwri94]
+GO
+ALTER TABLE [dbo].[scout_group]  WITH CHECK ADD  CONSTRAINT [FKfpuk6uewj822j13fbojxrxqt5] FOREIGN KEY([scout_group_id])
+REFERENCES [dbo].[lkp_scout_group] ([id])
+GO
+ALTER TABLE [dbo].[scout_group] CHECK CONSTRAINT [FKfpuk6uewj822j13fbojxrxqt5]
+GO
+ALTER TABLE [dbo].[unit]  WITH CHECK ADD  CONSTRAINT [FK8im5jcgayoj0xrwxnww67o4v9] FOREIGN KEY([unit_id])
+REFERENCES [dbo].[lkp_unit] ([id])
+GO
+ALTER TABLE [dbo].[unit] CHECK CONSTRAINT [FK8im5jcgayoj0xrwxnww67o4v9]
+GO
+ALTER TABLE [dbo].[unit]  WITH CHECK ADD  CONSTRAINT [FKb9cyau6h3mxeou1l7k0b58274] FOREIGN KEY([leader_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[unit] CHECK CONSTRAINT [FKb9cyau6h3mxeou1l7k0b58274]
+GO
+ALTER TABLE [dbo].[unit]  WITH CHECK ADD  CONSTRAINT [FKlqmqo0u2ehlbnr17pt3g9c33j] FOREIGN KEY([scout_group_id])
+REFERENCES [dbo].[scout_group] ([id])
+GO
+ALTER TABLE [dbo].[unit] CHECK CONSTRAINT [FKlqmqo0u2ehlbnr17pt3g9c33j]
+GO
+ALTER TABLE [dbo].[user_role]  WITH CHECK ADD  CONSTRAINT [FKarou1pvydknqxvcb30p0yxxeg] FOREIGN KEY([member_id])
+REFERENCES [dbo].[member] ([id])
+GO
+ALTER TABLE [dbo].[user_role] CHECK CONSTRAINT [FKarou1pvydknqxvcb30p0yxxeg]
+GO
+ALTER TABLE [dbo].[user_role]  WITH CHECK ADD  CONSTRAINT [FKef44i0craf8buic8skban8pve] FOREIGN KEY([user_type_id])
+REFERENCES [dbo].[lkp_user_type] ([id])
+GO
+ALTER TABLE [dbo].[user_role] CHECK CONSTRAINT [FKef44i0craf8buic8skban8pve]
+GO
+ALTER TABLE [dbo].[user_role]  WITH CHECK ADD  CONSTRAINT [FKlit7pxyavyo5rs0vivl7iaad6] FOREIGN KEY([security_user_id])
+REFERENCES [dbo].[security_user] ([id])
+GO
+ALTER TABLE [dbo].[user_role] CHECK CONSTRAINT [FKlit7pxyavyo5rs0vivl7iaad6]
+GO
+ALTER TABLE [dbo].[woodbadge]  WITH CHECK ADD  CONSTRAINT [FK918wq8owv63xk05hgmq4j3cme] FOREIGN KEY([woodbadge_id])
+REFERENCES [dbo].[lkp_woodbadge] ([id])
+GO
+ALTER TABLE [dbo].[woodbadge] CHECK CONSTRAINT [FK918wq8owv63xk05hgmq4j3cme]
+GO
+USE [master]
+GO
+ALTER DATABASE [projekat] SET  READ_WRITE 
+GO
